@@ -1,0 +1,9 @@
+{% if latest_animal_list %}
+    <ul>
+    {% for animal in latest_animal_list %}
+        <li>{{ animal.nome }} ( {{ animal.get_especie_display }}/{{ animal.get_sexo_display }} ); incluído em {{ animal.adicionado_em }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>Nenhum animal disponível.</p>
+{% endif %}
