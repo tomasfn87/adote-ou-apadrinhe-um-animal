@@ -12,18 +12,19 @@ class Animal(models.Model):
 
     nome = models.CharField(max_length=500)
 
-    ANIMAIS_CHOICES = (
+    ESPECIE_CHOICES = (
         ('c', 'cachorro'),
-        ('g', 'gato')
+        ('g', 'gato'),
+        ('o', 'outro'),
     )
     especie = models.CharField(
         max_length=8,
-        choices=ANIMAIS_CHOICES,
+        choices=ESPECIE_CHOICES,
     )
 
     SEXO_CHOICES = (
         ('m', 'macho'),
-        ('f', 'fêmea')
+        ('f', 'fêmea'),
     )
     sexo = models.CharField(
         max_length=5,
