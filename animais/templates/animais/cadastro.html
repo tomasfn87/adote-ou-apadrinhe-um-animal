@@ -1,0 +1,7 @@
+<h1>Cadastrar animal</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Cadastrar animal</button>
+</form>
+<button><a href="{% url 'animais:index' %}">Voltar</a></button>

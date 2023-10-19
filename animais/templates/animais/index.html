@@ -1,3 +1,5 @@
+<h1>Adote ou apadrinhe um animal</h1>
+<button><a href="{% url 'animais:cadastro' %}">Cadastre um animal</a></button>
 {% if latest_animal_list %}
     <ul>
     {% for animal in latest_animal_list %}
