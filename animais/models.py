@@ -33,6 +33,7 @@ class Animal(models.Model):
     # especie
     especie = models.CharField(
         max_length=8,
+        verbose_name='espécie',
         choices=ESPECIE_CHOICES,
     )
 
