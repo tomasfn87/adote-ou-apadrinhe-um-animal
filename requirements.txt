@@ -1,0 +1,4 @@
+Django==4.2.6
+Pillow==10.1.0
+Requests==2.31.0
+supabase==1.2.0
