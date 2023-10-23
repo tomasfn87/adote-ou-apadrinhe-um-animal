@@ -1,10 +1,8 @@
-from django.core.files.uploadedfile import SimpleUploadedFile
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.views import generic
 from django.utils import timezone as tz
 
-from datetime import datetime as dt
 from io import BytesIO
 from PIL import Image
 from os import environ as env
@@ -41,8 +39,7 @@ def cadastro(request):
     form = AnimalForm(request.POST, request.FILES)
     if form.is_valid():
         animal = form.save(commit=False)
-        now = dt.now()
-        data_hora = now.strftime("%Y-%m-%d %H:%M:%S.%f").replace(" ", "_")
+        data_hora = tz.now().strftime("%Y-%m-%dT%H:%M:%S.%f%z").replace(" ", "_")
         path_on_supabase = f'animal_{data_hora}.jpg'
         if 'arquivo_imagem' in request.FILES:
             imagem = request.FILES['arquivo_imagem'].read()
