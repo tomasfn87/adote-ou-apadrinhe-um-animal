@@ -1,9 +1,13 @@
 from django.core import validators
+from django.core.files import File
 from django.core.validators import RegexValidator
 from django.db import models
 from django.utils import timezone as tz
+from io import BytesIO
 
 import datetime as dt
+import re
+
 
 class Animal(models.Model):
     def __str__(self):
@@ -35,6 +39,8 @@ class Animal(models.Model):
         max_length=8,
         verbose_name='espécie',
         choices=ESPECIE_CHOICES,
+        blank=False,
+        null=False,
     )
 
     SEXO_CHOICES = (
@@ -45,7 +51,12 @@ class Animal(models.Model):
     sexo = models.CharField(
         max_length=5,
         choices=SEXO_CHOICES,
+        blank=False,
+        null=False,
     )
+
+    # imagem
+    imagem = models.URLField(blank=False, null=False)
 
     # adicionado_em
     adicionado_em = models.DateTimeField(auto_now_add=True)

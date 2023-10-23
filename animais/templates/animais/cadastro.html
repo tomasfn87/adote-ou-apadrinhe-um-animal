@@ -1,7 +1,26 @@
 <h1>Cadastrar animal</h1>
-<form method="post">
+<form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ form.as_p }}
+    <div class="form-group">
+        <label for="{{ form.nome.id_for_label }}">Nome:</label>
+        {{ form.nome }}
+    </div>
+    <br>
+    <div class="form-group">
+        <label for="{{ form.especie.id_for_label }}">Espécie:</label>
+        {{ form.especie }}
+    </div>
+    <br>
+    <div class="form-group">
+        <label for="{{ form.sexo.id_for_label }}">Sexo:</label>
+        {{ form.sexo }}
+    </div>
+    <br>
+    <div class="form-group">
+        <label for="{{ form.arquivo_imagem.id_for_label }}">Imagem:</label>
+        {{ form.arquivo_imagem }}
+    </div>
+    <br>
     <button type="submit">Cadastrar animal</button>
 </form>
 <button><a href="{% url 'animais:index' %}">Voltar</a></button>

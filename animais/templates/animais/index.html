@@ -1,11 +1,30 @@
 <h1>Adote ou apadrinhe um animal</h1>
 <button><a href="{% url 'animais:cadastro' %}">Cadastre um animal</a></button>
+<hr>
 {% if latest_animal_list %}
-    <ul>
+    <table>
     {% for animal in latest_animal_list %}
-        <li>{{ animal.nome }} ( {{ animal.get_especie_display }}/{{ animal.get_sexo_display }} ); incluído em {{ animal.adicionado_em }}</li>
+        <tr>
+            <td>
+                <a href="{{ animal.imagem }}" target="_blank">
+                    {% if animal.imagem %}
+                        <img src="{{ animal.imagem }}" alt="{{ animal.nome }}" style="max-height: 250px;">
+                    {% endif %}
+                </a>
+            </td>
+            <td>
+                <div class="animal-details">
+                    <p><strong>Nome:</strong> {{ animal.nome }}</p>
+                    <p><strong>Espécie:</strong> {{ animal.get_especie_display }}</p>
+                    <p><strong>Sexo:</strong> {{ animal.get_sexo_display }}</p>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">Incluído em {{ animal.adicionado_em }}</td>
+        </tr>
     {% endfor %}
-    </ul>
+    </table>
 {% else %}
     <p>Nenhum animal disponível.</p>
 {% endif %}
