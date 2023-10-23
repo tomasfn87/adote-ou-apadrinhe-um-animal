@@ -1,10 +1,9 @@
 from django.core import validators
 from django.core.files import File
-from django.core.validators import RegexValidator
 from django.db import models
 from django.utils import timezone as tz
-from io import BytesIO
 
+from io import BytesIO
 import datetime as dt
 import re
 
