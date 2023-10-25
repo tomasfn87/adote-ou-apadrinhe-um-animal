@@ -1,0 +1,10 @@
+SECRET_KEY=Django Secret Key from settings.py
+ENGINE=SupabaseDB
+HOST=SupabaseDB
+NAME=SupabaseDB
+USER=SupabaseDB
+PASSWORD=SupabaseDB
+PORT=SupabaseDB
+SUPABASE_URL=SupabaseServiceURL
+SUPABASE_IMAGES_BUCKET_NAME=SupabaseImageBucketName
+SUPABASE_API_KEY=SupabaseServiceAPIKey
