@@ -10,14 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+from loadenv import load_env_file
 from pathlib import Path
 from os import environ as env
 
-with open(".env", "r") as env_file:
-    for line in env_file:
-        if "=" in line:
-            key, value = line.strip().split("=", 1)
-            env[key] = value
+load_env_file()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent

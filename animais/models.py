@@ -3,9 +3,7 @@ from django.core.files import File
 from django.db import models
 from django.utils import timezone as tz
 
-from io import BytesIO
 import datetime as dt
-import re
 
 
 class Animal(models.Model):

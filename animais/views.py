@@ -4,20 +4,15 @@ from django.views import generic
 from django.utils import timezone as tz
 
 from io import BytesIO
+from loadenv import load_env_file
 from PIL import Image
 from os import environ as env
-import requests
 import supabase
 
 from .models import Animal
 from .forms import AnimalForm
 
-
-with open(".env", "r") as env_file:
-    for line in env_file:
-        if "=" in line:
-            key, value = line.strip().split("=", 1)
-            env[key] = value
+load_env_file()
 
 SUPABASE_IMAGES_BUCKET_NAME = env.get("SUPABASE_IMAGES_BUCKET_NAME")
 SUPABASE_URL = env.get("SUPABASE_URL")
