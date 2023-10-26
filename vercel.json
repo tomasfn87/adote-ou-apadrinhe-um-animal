@@ -1,0 +1,14 @@
+{
+  "builds": [
+    {
+      "src": "adote_ou_apadrinhe_um_animal/wsgi.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "adote_ou_apadrinhe_um_animal/wsgi.py"
+    }
+  ]
+}

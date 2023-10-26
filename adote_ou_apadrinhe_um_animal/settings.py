@@ -10,11 +10,13 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
-from loadenv import load_env_file
 from pathlib import Path
 from os import environ as env
+import os
 
-load_env_file()
+if os.path.isfile('./.env'):
+    from loadenv import load_env_file
+    load_env_file()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,9 +29,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '.vercel.app',
+    '127.0.0.1',
+    'localhost',
+]
 
 
 # Application definition
@@ -59,7 +65,7 @@ ROOT_URLCONF = 'adote_ou_apadrinhe_um_animal.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -72,7 +78,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'adote_ou_apadrinhe_um_animal.wsgi.application'
+WSGI_APPLICATION = 'adote_ou_apadrinhe_um_animal.wsgi.app'
 
 
 # Database
