@@ -1,26 +1,47 @@
-<h1>Cadastrar animal</h1>
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <div class="form-group">
-        <label for="{{ form.nome.id_for_label }}">Nome:</label>
-        {{ form.nome }}
+{% extends 'animais/base.html' %}
+{% block title %}
+  Cadastre um Animal
+{% endblock %}
+{% block content %}
+  <h1>Cadastrar animal</h1>
+  <div class="card custom-card-body">
+    <div class="card-body">
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="{{ form.nome.id_for_label }}">Nome:</label>
+          {{ form.nome }}
+        </div>
+        <div class="form-group">
+          <label for="{{ form.especie.id_for_label }}">Espécie:</label>
+          {{ form.especie }}
+        </div>
+        <div class="form-group">
+          <label for="{{ form.sexo.id_for_label }}">Sexo:</label>
+          {{ form.sexo }}
+        </div>
+        <div class="form-group">
+          <label for="{{ form.arquivo_imagem.id_for_label }}">Imagem:</label>
+          {{ form.arquivo_imagem }}
+        </div>
+        <button type="submit" class="btn btn-primary">Cadastrar animal</button>
+      </form>
     </div>
-    <br>
-    <div class="form-group">
-        <label for="{{ form.especie.id_for_label }}">Espécie:</label>
-        {{ form.especie }}
-    </div>
-    <br>
-    <div class="form-group">
-        <label for="{{ form.sexo.id_for_label }}">Sexo:</label>
-        {{ form.sexo }}
-    </div>
-    <br>
-    <div class="form-group">
-        <label for="{{ form.arquivo_imagem.id_for_label }}">Imagem:</label>
-        {{ form.arquivo_imagem }}
-    </div>
-    <br>
-    <button type="submit">Cadastrar animal</button>
-</form>
-<button><a href="{% url 'animais:index' %}">Voltar</a></button>
+  </div>
+  <br>
+  <a href="{% url 'animais:index' %}" class="btn btn-secondary">Voltar</a>
+</div>
+<style>
+    .custom-card-body {
+        max-width: 600px;
+        margin: left;
+    }
+
+    @media (max-width: 600px) {
+        .custom-card-body {
+          max-width: 100%;
+          padding: 10px;
+        }
+    }
+</style>
+{% endblock %}
