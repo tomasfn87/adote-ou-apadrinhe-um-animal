@@ -9,21 +9,25 @@
       <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="form-group">
-          <label for="{{ form.nome.id_for_label }}">Nome:</label>
+          <label for="{{ form.nome.id_for_label }}">Nome</label><br>
           {{ form.nome }}
         </div>
+        <br>
         <div class="form-group">
-          <label for="{{ form.especie.id_for_label }}">Espécie:</label>
+          <label for="{{ form.especie.id_for_label }}">Espécie</label><br>
           {{ form.especie }}
         </div>
+        <br>
         <div class="form-group">
-          <label for="{{ form.sexo.id_for_label }}">Sexo:</label>
+          <label for="{{ form.sexo.id_for_label }}">Sexo</label><br>
           {{ form.sexo }}
         </div>
+        <br>
         <div class="form-group">
-          <label for="{{ form.arquivo_imagem.id_for_label }}">Imagem:</label>
+          <label for="{{ form.arquivo_imagem.id_for_label }}">Imagem</label><br>
           {{ form.arquivo_imagem }}
         </div>
+        <br><br>
         <button type="submit" class="btn btn-primary">Cadastrar animal</button>
       </form>
     </div>
