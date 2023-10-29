@@ -1,7 +1,7 @@
 from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.shortcuts import render
-from django.views import generic
+from django.views.generic import ListView
 from django.utils import timezone as tz
 
 from io import BytesIO
@@ -21,18 +21,17 @@ SUPABASE_IMAGES_BUCKET_NAME = env.get("SUPABASE_IMAGES_BUCKET_NAME")
 SUPABASE_URL = env.get("SUPABASE_URL")
 SUPABASE_KEY = env.get("SUPABASE_API_KEY")
 
-class IndexView(generic.ListView):
+class IndexView(ListView):
     template_name = "animais/index.html"
-    context_object_name = "latest_animal_list"
     paginate_by = 6
+    model = Animal
 
     def get_queryset(self):
-        # Retornar os últimos 5 animais cadastrados.
-        return Animal.objects.order_by("-adicionado_em")[:5]
+        return Animal.objects.order_by("-adicionado_em")
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Adicione o número total de páginas à variável de contexto.
+        p = Paginator(self.get_queryset(), self.paginate_by)
         context['num_pages'] = context['paginator'].num_pages
         return context
 
