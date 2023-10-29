@@ -5,6 +5,23 @@
 {% block content %}
   <h1>Adote ou apadrinhe um animal</h1>
   <hr>
+  <div class="row">
+    <div class="col-md-12">
+      <ul class="pagination">
+        <span class="step-links horizontal-pagination">
+          {% if page_obj.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page=1">&lt;&lt;</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">&lt;</a></li>
+          {% endif %}
+            <li class="page-item disabled"><span class="page-link">Pág. {{ page_obj.number }} de {{ num_pages }}</span></li>
+          {% if page_obj.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">&gt;</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ num_pages }}">&gt;&gt;</a></li>
+          {% endif %}
+        </span>
+      </ul>
+    </div>
+  </div>
   {% if page_obj %}
     <div class="row">
       {% for animal in page_obj %}
@@ -36,6 +53,7 @@
         </div>
       {% endfor %}
     </div>
+    <br>
     <div class="row">
       <div class="col-md-12">
         <ul class="pagination">
@@ -44,7 +62,7 @@
               <li class="page-item"><a class="page-link" href="?page=1">&lt;&lt;</a></li>
               <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">&lt;</a></li>
             {% endif %}
-              <li class="page-item disabled"><span class="page-link">Página {{ page_obj.number }} de {{ num_pages }}</span></li>
+              <li class="page-item disabled"><span class="page-link">Pág. {{ page_obj.number }} de {{ num_pages }}</span></li>
             {% if page_obj.has_next %}
               <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">&gt;</a></li>
               <li class="page-item"><a class="page-link" href="?page={{ num_pages }}">&gt;&gt;</a></li>
