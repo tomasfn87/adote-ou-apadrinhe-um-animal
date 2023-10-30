@@ -1,7 +1,5 @@
 {% extends 'animais/base.html' %}
-{% block title %}
-  Adote ou Apadrinhe um Animal
-{% endblock %}
+{% block title %}Adote ou Apadrinhe um Animal{% endblock %}
 {% block content %}
   <h1>Adote ou apadrinhe um animal</h1>
   <hr>
@@ -10,13 +8,13 @@
       <ul class="pagination">
         <span class="step-links horizontal-pagination">
           {% if page_obj.has_previous %}
-            <li class="page-item"><a class="page-link" href="?page=1">&lt;&lt;</a></li>
-            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">&lt;</a></li>
+            <li class="page-item"><a class="page-link" href="?page=1" title="Página anterior">&lt;&lt;</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}" title="Primeira página">&lt;</a></li>
           {% endif %}
-            <li class="page-item disabled"><span class="page-link">Pág. {{ page_obj.number }} de {{ num_pages }}</span></li>
+            <li class="page-item disabled"><span class="page-link">Pág. <b>{{ page_obj.number }}</b> de <b>{{ num_pages }}</b></span></li>
           {% if page_obj.has_next %}
-            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">&gt;</a></li>
-            <li class="page-item"><a class="page-link" href="?page={{ num_pages }}">&gt;&gt;</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}" title="Próxima página">&gt;</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ num_pages }}" title="Última página">&gt;&gt;</a></li>
           {% endif %}
         </span>
       </ul>
@@ -27,7 +25,7 @@
       {% for animal in page_obj %}
         <div class="col-12 col-md-4 card">
             <a href="{{ animal.imagem }}" target="_blank">
-              <img src="{{ animal.imagem }}" alt="{{ animal.nome }}" class="card-img-top img-fluid" style="object-fit: cover; object-position: center;">
+              <img src="{{ animal.imagem }}" title="{{ animal.nome }} ({{  animal.get_especie_display  }}/{{ animal.get_sexo_display }})" alt="{{ animal.nome }}" class="card-img-top img-fluid" style="object-fit: cover; object-position: center;">
             </a>
             <div class="card-body">
                 <h5 class="card-title">{{ animal.nome }}</h5>
@@ -59,13 +57,13 @@
         <ul class="pagination">
           <span class="step-links horizontal-pagination">
             {% if page_obj.has_previous %}
-              <li class="page-item"><a class="page-link" href="?page=1">&lt;&lt;</a></li>
-              <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">&lt;</a></li>
+              <li class="page-item"><a class="page-link" href="?page=1" title="Página anterior">&lt;&lt;</a></li>
+              <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}" title="Primeira página">&lt;</a></li>
             {% endif %}
-              <li class="page-item disabled"><span class="page-link">Pág. {{ page_obj.number }} de {{ num_pages }}</span></li>
+              <li class="page-item disabled"><span class="page-link">Pág. <b>{{ page_obj.number }}</b> de <b>{{ num_pages }}</b></span></li>
             {% if page_obj.has_next %}
-              <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">&gt;</a></li>
-              <li class="page-item"><a class="page-link" href="?page={{ num_pages }}">&gt;&gt;</a></li>
+              <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}" title="Próxima página">&gt;</a></li>
+              <li class="page-item"><a class="page-link" href="?page={{ num_pages }}" title="Última página">&gt;&gt;</a></li>
             {% endif %}
           </span>
         </ul>
@@ -95,11 +93,11 @@
         display: flex;
         list-style: none;
       }
-    
+
       .horizontal-pagination li {
         margin-right: 10px;
       }
-    
+
       .horizontal-pagination .page-item.disabled span {
         pointer-events: none;
         cursor: default;
