@@ -118,7 +118,7 @@
                   var sexo = '';
                   var dataCadastro = '';
                   if (groups) {
-                      nome = groups[1];
+                      nome = groups[1].replaceAll(/\s{2,}/g, ' ').trim();
                       especie = groups[2];
                       sexo = groups[3];
                       dataCadastro = groups[4];
