@@ -104,14 +104,14 @@
       }
     </style>
     <script type="text/javascript">
-      let whatsappButtons = document.querySelectorAll('.whatsapp a');
+      var whatsappButtons = document.querySelectorAll('.whatsapp a');
       if (whatsappButtons) {
           dataLayer = dataLayer || [];
           for (var i = 0; i < whatsappButtons.length; i++) {
               var button = whatsappButtons[i];
               button.addEventListener("click", function() {
                   var text = event.currentTarget.getAttribute("href");
-                  var REmensagemWhatsApp = /Olá\! Tenho interesse em adotar [ao] (.+?) \((.+)\/(.+)\), cadastrad[ao] para adoção em (.+)$/;
+                  var REmensagemWhatsApp = /Olá\! Tenho interesse em adotar [ao] (.+?) \((.+?)\/(.+?)\), cadastrad[ao] para adoção em (.+?)$/;
                   var groups = text.match(REmensagemWhatsApp);
                   var nome = '';
                   var especie = '';
