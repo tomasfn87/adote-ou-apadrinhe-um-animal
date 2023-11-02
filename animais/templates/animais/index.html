@@ -23,7 +23,7 @@
   {% if page_obj %}
     <div class="row">
       {% for animal in page_obj %}
-        <div class="col-12 col-md-4 card">
+        <div class="col-12 col-md-4 card animal-card">
             <a href="{{ animal.imagem }}" target="_blank">
               <img src="{{ animal.imagem }}" title="{{ animal.nome }} ({{  animal.get_especie_display  }}/{{ animal.get_sexo_display }})" alt="{{ animal.nome }}" class="card-img-top img-fluid" style="object-fit: cover; object-position: center;">
             </a>

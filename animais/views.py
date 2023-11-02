@@ -1,7 +1,7 @@
 from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.shortcuts import render
-from django.views.generic import ListView
+from django.views.generic import ListView, TemplateView
 from django.utils import timezone as tz
 
 from io import BytesIO
@@ -34,6 +34,9 @@ class IndexView(ListView):
         p = Paginator(self.get_queryset(), self.paginate_by)
         context['num_pages'] = context['paginator'].num_pages
         return context
+
+class SobreView(TemplateView):
+    template_name = 'animais/sobre.html'
 
 def cadastro(request):
     if not request.method == 'POST':
