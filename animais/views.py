@@ -1,6 +1,6 @@
 from django.core.paginator import Paginator
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import ListView, TemplateView
 from django.utils import timezone as tz
 
@@ -28,7 +28,7 @@ class IndexView(ListView):
 
     def get_queryset(self):
         return Animal.objects.order_by("-adicionado_em")
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         p = Paginator(self.get_queryset(), self.paginate_by)
@@ -58,7 +58,16 @@ def cadastro(request):
             if response.status_code == 200:
                 animal.imagem = f"{SUPABASE_URL}/storage/v1/object/public/{SUPABASE_IMAGES_BUCKET_NAME}/{path_on_supabase}"
                 animal.save()
-                return HttpResponse('Página de sucesso')
+                request.session['new_animal_id'] = animal.id
+                return redirect('animais:cadastro_sucesso')
+    return render(request, 'animais/cadastro.html', {'form': form})
+
+def cadastro_sucesso(request):
+    animal_id = request.session.get('new_animal_id', None)
+    if animal_id is not None:
+        animal = get_object_or_404(Animal, id=animal_id)
+        return render(request, 'animais/cadastro_sucesso.html', {'animal': animal})
+    return render(request, 'animais/cadastro_sucesso.html', {'animal': None})
 
 def redimensionar_imagem(imagem, largura_maxima, altura_maxima):
     img = Image.open(BytesIO(imagem))

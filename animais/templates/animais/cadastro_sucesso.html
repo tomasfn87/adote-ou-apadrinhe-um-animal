@@ -1,0 +1,28 @@
+{% extends 'animais/base.html' %}
+{% block title %}Cadastro concluído{% endblock %}
+{% block content %}
+  <div class="col-12 col-md-4 card animal-card">
+    <div class="alert alert-success">
+      <h4>Sucesso!</h4>
+      <span>Seu animal foi cadastrado com sucesso.</span>
+      <span>
+        <svg width="30px" height="30px" viewBox="-0.5 0 19 19" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"/><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/><g id="SVGRepo_iconCarrier"><title>icon/40/checked</title><desc>Created with Sketch.</desc><defs></defs><g id="out" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage"><rect id="path" stroke="#388057" fill="#45b557" sketch:type="MSShapeGroup" x="2" y="2" width="13.5" height="13.5" rx="3"></rect><path d="M7.144375,9.91722595 L4.79875,7.58501119 L4,8.37360179 L7.144375,11.5 L13.894375,4.7885906 L13.10125,4 L7.144375,9.91722595 L7.144375,9.91722595 Z" id="path" fill="#FFFFFF" sketch:type="MSShapeGroup"></path> </g></g></svg>
+      </span>
+    </div>
+    <a href="{{ animal.imagem }}" target="_blank">
+      <img src="{{ animal.imagem }}" title="{{ animal.nome }} ({{  animal.get_especie_display  }}/{{ animal.get_sexo_display }})" alt="{{ animal.nome }}" class="card-img-top img-fluid" style="object-fit: cover; object-position: center;">
+    </a>
+    <div class="card-body">
+      <h5 class="card-title">{{ animal.nome }}</h5>
+      <br>
+      <p class="card-text">
+        <strong>Espécie:</strong> {{ animal.get_especie_display }}
+      </p>
+      <p class="card-text">
+        <strong>Sexo:</strong> {{ animal.get_sexo_display }}
+      </p>
+      <p class="card-text small">Incluído em {{ animal.adicionado_em }}</p>
+    </p>
+  </div>
+  </div>
+{% endblock %}
