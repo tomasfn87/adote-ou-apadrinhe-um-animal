@@ -3,11 +3,11 @@
   <head>
     <!-- Google Tag Manager -->
     <script>
-      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-      })(window,document,'script','dataLayer','GTM-PKV2F5CD');
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-PKV2F5CD');
     </script>
     <!-- End Google Tag Manager -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -50,8 +50,37 @@
         }
       }
 
-      .success-icon {
-        float: center;
+      @media (max-width: 767px) {
+        .card {
+          margin-bottom: 30px;
+        }
+      }
+
+      .card {
+        padding: 10px;
+      }
+
+      .card-img-top {
+        border-radius: 10px;
+        overflow: hidden;
+      }
+
+      .whatsapp {
+        float: right;
+      }
+
+      .horizontal-pagination {
+        display: flex;
+        list-style: none;
+      }
+
+      .horizontal-pagination li {
+        margin-right: 10px;
+      }
+
+      .horizontal-pagination .page-item.disabled span {
+        pointer-events: none;
+        cursor: default;
       }
     </style>
   </head>
