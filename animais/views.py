@@ -85,3 +85,13 @@ def redimensionar_imagem(imagem, largura_maxima, altura_maxima):
     buffer = BytesIO()
     img.save(buffer, 'JPEG')
     return buffer.getvalue()
+
+def login(request):
+    return render(request, 'animais/login.html')
+
+
+def processar_login(request): # Apenas
+    if request.method == "POST":
+        print(request.POST.get('username'))
+        print(request.POST.get('password'))
+        return render(request, 'animais/cadastro.html')
