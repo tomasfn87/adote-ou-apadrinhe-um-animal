@@ -2,13 +2,17 @@ from django.core import validators
 from django.core.files import File
 from django.db import models
 from django.utils import timezone as tz
-
 import datetime as dt
 
 
 class Animal(models.Model):
     def __str__(self):
-        return f"{self.nome} ({self.especie}/{self.sexo}) incluído em: {self.adicionado_em}"
+        return "{} ({}/{}) incluído em: {}".format(
+            self.nome,
+            self.especie,
+            self.sexo,
+            self.adicionado_recentemente,
+        )
 
     def adicionado_recentemente(self):
         now = tz.now()
@@ -16,7 +20,8 @@ class Animal(models.Model):
 
     def validate_nome(value):
         if not any(char.isalpha() for char in value):
-            raise validators.ValidationError("O campo nome deve conter pelo menos uma letra.")
+            raise validators.ValidationError(
+                "O campo nome deve conter pelo menos uma letra.")
 
     # nome
     nome = models.CharField(
@@ -57,3 +62,6 @@ class Animal(models.Model):
 
     # adicionado_em
     adicionado_em = models.DateTimeField(auto_now_add=True)
+
+    # adicionado_por
+    adicionado_por = models.CharField(max_length=100)

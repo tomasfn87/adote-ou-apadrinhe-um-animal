@@ -49,17 +49,27 @@ def cadastro(request):
     form = AnimalForm(request.POST, request.FILES)
     if form.is_valid():
         animal = form.save(commit=False)
-        data_hora = tz.now().strftime("%Y-%m-%dT%H:%M:%S.%f%z").replace(" ", "_")
+        data_hora = \
+            tz.now().strftime("%Y-%m-%dT%H:%M:%S.%f%z").replace(" ", "_")
         path_on_supabase = f'animal_{data_hora}.jpg'
         if 'arquivo_imagem' in request.FILES:
             imagem = request.FILES['arquivo_imagem'].read()
             imagem_reduzida = redimensionar_imagem(
                 imagem=imagem, largura_maxima=1366, altura_maxima=768)
             client = supabase.create_client(SUPABASE_URL, SUPABASE_KEY)
-            response = client.storage.from_(SUPABASE_IMAGES_BUCKET_NAME).upload(
-                file=imagem_reduzida, path=path_on_supabase, file_options={"content-type": "image/jpeg"})
+            response = \
+                client.storage.from_(SUPABASE_IMAGES_BUCKET_NAME).upload(
+                    file=imagem_reduzida,
+                    path=path_on_supabase,
+                    file_options={"content-type": "image/jpeg"},
+                )
             if response.status_code == 200:
-                animal.imagem = f"{SUPABASE_URL}/storage/v1/object/public/{SUPABASE_IMAGES_BUCKET_NAME}/{path_on_supabase}"
+                animal.imagem = "{}/storage/v1/object/public/{}/{}".format(
+                    SUPABASE_URL,
+                    SUPABASE_IMAGES_BUCKET_NAME,
+                    path_on_supabase,
+                )
+                animal.adicionado_por = request.user.username
                 animal.save()
                 request.session['new_animal_id'] = animal.id
                 return redirect('animais:cadastro_sucesso')
@@ -69,7 +79,8 @@ def cadastro_sucesso(request):
     animal_id = request.session.get('new_animal_id', None)
     if animal_id is not None:
         animal = get_object_or_404(Animal, id=animal_id)
-        return render(request, 'animais/cadastro_sucesso.html', {'animal': animal})
+        return render(
+            request, 'animais/cadastro_sucesso.html', {'animal': animal})
     return render(request, 'animais/cadastro_sucesso.html', {'animal': None})
 
 def redimensionar_imagem(imagem, largura_maxima, altura_maxima):
@@ -80,10 +91,12 @@ def redimensionar_imagem(imagem, largura_maxima, altura_maxima):
     while nova_altura > altura_maxima or nova_largura > largura_maxima:
         if nova_altura > altura_maxima:
             nova_altura = altura_maxima
-            nova_largura = int((largura_original / altura_original) * nova_altura)
+            nova_largura = \
+                int((largura_original / altura_original) * nova_altura)
         if nova_largura > largura_maxima:
             nova_largura = largura_maxima
-            nova_altura = int((altura_original / largura_original) * nova_largura)
+            nova_altura = \
+                int((altura_original / largura_original) * nova_largura)
     img = img.resize((nova_largura, nova_altura))
     buffer = BytesIO()
     img.save(buffer, 'JPEG')
@@ -103,7 +116,8 @@ def login_admin(request):
         else:
             error_message = "Login e/ou senha inválido(s)."
     if error_message:
-        return render(request, 'animais/login.html', {'error_message': error_message})
+        return render(request, 'animais/login.html',
+            {'error_message': error_message})
     return render(request, 'animais/login.html')
 
 def logout_admin(request):
