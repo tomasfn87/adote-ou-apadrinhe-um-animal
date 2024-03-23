@@ -9,7 +9,7 @@
           Login
         </div>
         <div class="card-body">
-          <form action="processar_login" method="post">
+          <form action="" method="post">
             {% csrf_token %}
             <div class="mb-3">
               <label for="username" class="form-label">Username</label>
@@ -24,11 +24,17 @@
               <label class="form-check-label" for="rememberMe">Remember me</label>
             </div>
             <button type="submit" class="btn btn-primary">Login</button>
+            {% if error_message %}
+              <br><br>
+              <div class="alert alert-danger">
+                <h4>Erro!</h4>
+                <span>{{ error_message }}</span>
+              </div>
+            {% endif %}
           </form>
         </div>
       </div>
     </div>
   </div>
 </div>
-
 {% endblock %}

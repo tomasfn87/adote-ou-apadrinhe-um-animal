@@ -1,36 +1,50 @@
 {% extends 'animais/base.html' %}
 {% block title %}Cadastre um Animal{% endblock %}
 {% block content %}
+  <script>
+      function returnHereAfterLogin() {
+          var currentPage = encodeURIComponent(window.location.pathname);
+          var loginURL = "{% url 'animais:login_admin' %}?next=" + currentPage;
+          window.location.href = loginURL;
+      }
+  </script>
   <h1>Cadastrar animal</h1>
   <hr>
-  <div class="card custom-card-body">
-    <div class="card-body">
-      <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="form-group">
-          <label for="{{ form.nome.id_for_label }}">Nome</label><br>
-          {{ form.nome }}
-        </div>
-        <br>
-        <div class="form-group">
-          <label for="{{ form.especie.id_for_label }}">Espécie</label><br>
-          {{ form.especie }}
-        </div>
-        <br>
-        <div class="form-group">
-          <label for="{{ form.sexo.id_for_label }}">Sexo</label><br>
-          {{ form.sexo }}
-        </div>
-        <br>
-        <div class="form-group">
-          <label for="{{ form.arquivo_imagem.id_for_label }}">Imagem</label><br>
-          {{ form.arquivo_imagem }}
-        </div>
-        <br><br>
-        <button type="submit" class="btn btn-primary">Cadastrar animal</button>
-      </form>
+  {% if not user.is_authenticated %}
+    <span>Clique no botão abaixo para fazer login</span>
+    <br><br>
+    <button type="button" class="btn btn-primary" onclick="returnHereAfterLogin()">Login</button>
+    <br><br>
+  {% else %}
+    <div class="card custom-card-body">
+      <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="{{ form.nome.id_for_label }}">Nome</label><br>
+            {{ form.nome }}
+          </div>
+          <br>
+          <div class="form-group">
+            <label for="{{ form.especie.id_for_label }}">Espécie</label><br>
+            {{ form.especie }}
+          </div>
+          <br>
+          <div class="form-group">
+            <label for="{{ form.sexo.id_for_label }}">Sexo</label><br>
+            {{ form.sexo }}
+          </div>
+          <br>
+          <div class="form-group">
+            <label for="{{ form.arquivo_imagem.id_for_label }}">Imagem</label><br>
+            {{ form.arquivo_imagem }}
+          </div>
+          <br><br>
+          <button type="submit" class="btn btn-primary">Cadastrar animal</button>
+        </form>
+      </div>
     </div>
-  </div>
+  {% endif %}
   <br>
   <a href="{% url 'animais:index' %}" class="btn btn-secondary">Voltar</a>
 </div>

@@ -1,3 +1,5 @@
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.sessions.models import Session
 from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -86,12 +88,22 @@ def redimensionar_imagem(imagem, largura_maxima, altura_maxima):
     img.save(buffer, 'JPEG')
     return buffer.getvalue()
 
-def login(request):
+def login_admin(request):
+    error_message = ""
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        admin = authenticate(request, username=username, password=password)
+        if admin is not None:
+            login(request, admin)
+            next_page = request.GET.get('next', '/')
+            return redirect(next_page)
+        else:
+            error_message = "Login e/ou senha inválido(s)."
+    if error_message:
+        return render(request, 'animais/login.html', {'error_message': error_message})
     return render(request, 'animais/login.html')
 
-
-def processar_login(request): # Apenas
-    if request.method == "POST":
-        print(request.POST.get('username'))
-        print(request.POST.get('password'))
-        return render(request, 'animais/cadastro.html')
+def logout_admin(request):
+    logout(request)
+    return redirect('/')
