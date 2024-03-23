@@ -57,3 +57,8 @@ class Animal(models.Model):
 
     # adicionado_em
     adicionado_em = models.DateTimeField(auto_now_add=True)
+    
+    # adicionado_por
+    adicionado_por = models.CharField(
+        max_length=100
+    )

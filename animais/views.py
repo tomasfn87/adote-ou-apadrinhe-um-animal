@@ -59,6 +59,7 @@ def cadastro(request):
                 file=imagem_reduzida, path=path_on_supabase, file_options={"content-type": "image/jpeg"})
             if response.status_code == 200:
                 animal.imagem = f"{SUPABASE_URL}/storage/v1/object/public/{SUPABASE_IMAGES_BUCKET_NAME}/{path_on_supabase}"
+                animal.adicionado_por = request.user.username
                 animal.save()
                 request.session['new_animal_id'] = animal.id
                 return redirect('animais:cadastro_sucesso')
