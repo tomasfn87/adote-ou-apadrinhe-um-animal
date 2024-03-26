@@ -65,3 +65,24 @@ class Animal(models.Model):
 
     # adicionado_por
     adicionado_por = models.CharField(max_length=100)
+
+
+class Doacao(models.Model):
+    def __str__(self):
+        return f"{self.quantidade} {self.unidade} de {self.tipo_doacao} em {self.data_registro}"
+
+    UNIDADE_CHOICES = (
+        ('k', 'Kg'),
+        ('g', 'Gramas'),
+        ('u', 'Unidades'),
+    )
+
+    TIPO_DOACAO_CHOICES = (
+        ('r', 'Racao'),
+        ('a', 'Areia')
+    )
+
+    tipo_doacao   = models.CharField(max_length = 20)
+    quantidade    = models.IntegerField()
+    unidade       = models.CharField(max_length = 10, choices = UNIDADE_CHOICES)
+    data_registro = models.DateField()

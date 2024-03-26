@@ -12,7 +12,7 @@ from os import environ as env
 import os
 import supabase
 
-from .models import Animal
+from .models import Animal, Doacao
 from .forms import AnimalForm
 
 if os.path.isfile('./.env'):
@@ -123,3 +123,37 @@ def login_admin(request):
 def logout_admin(request):
     logout(request)
     return redirect('/')
+
+def registro_doacao(request):
+    data = {}
+
+    data['doacoes'] = Doacao.objects.all()
+
+    print(data['doacoes'][0])
+
+    if request.method == "POST":
+        tipo_doacao = request.POST.get('tipo_doacao')
+        quantidade  = request.POST.get('quantidade')
+        unidade     = request.POST.get('unidade')
+        postdate    = request.POST.get('postdate')
+
+
+        try:
+            doacao = Doacao(
+                tipo_doacao = tipo_doacao,
+                quantidade = quantidade,
+                unidade = unidade,
+                data_registro = postdate
+            )
+
+            doacao.save()
+
+            data['aviso'] = f"Cadastro de {quantidade} {unidade} {tipo_doacao} em {postdate} realizado com sucesso."
+            data['alert_type'] = 'alert-primary'
+        except:
+            data['aviso'] = f"Erro ao cadastrar {quantidade} {unidade} {tipo_doacao} em {postdate}."
+            data['alert_type'] = 'alert-danger'
+
+
+    return render(request, 'animais/registro_doacao.html', data)
+

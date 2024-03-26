@@ -10,4 +10,5 @@ urlpatterns = [
     path("sobre/", views.SobreView.as_view(), name="sobre"),
     path("login/", views.login_admin , name="login_admin"),
     path("logout/", views.logout_admin , name="logout_admin"),
+    path("registro_doacao/", views.registro_doacao , name="registro_doacao"),
 ]

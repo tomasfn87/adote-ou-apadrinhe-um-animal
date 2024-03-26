@@ -1,0 +1,88 @@
+{% extends 'animais/base.html' %}
+{% block title %}Adote ou Apadrinhe um Animal{% endblock %}
+{% block content %}
+ {% if not user.is_authenticated %}
+    <span>Clique no botão abaixo para fazer login</span>
+    <br><br>
+    <a href="{% url 'animais:login_admin' %}" class="btn btn-primary">Login</a>
+    <br><br>
+{% else %}
+{% if aviso %}
+<div class="alert {{ alert_type }}" role="alert">
+    {{ aviso }}
+</div>
+{% endif %}
+     <div class="container-sm custom-margin-auto">
+        <h2 class="text-center">Registro de Doação</h2>
+        <form method="post" action="">
+            {% csrf_token %}
+            <div class="form-group">
+                <div class="row">
+
+                    <div class="col-md-3">
+                        <label for="tipo_doacao">Qual tipo de doacao:</label>
+                        <select class="form-control" id="tipo_doacao" name="tipo_doacao" required>
+                            <option value="Ração">Ração</option>
+                            <option value="Areia">Areia</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="quantidade">Quantidade:</label>
+                        <input type="number" class="form-control" id="quantidade" name="quantidade" required>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="unidade">Unidade:</label>
+                        <select class="form-control" id="unidade" name="unidade" required>
+                            <option value="Kg">Kg</option>
+                            <option value="g">g</option>
+                            <option value="unidades">Unidades</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <label for="postdate">Data:</label>
+                        <input type="date" class="form-control" id="postdate" name="postdate">
+                    </div>
+
+                </div>
+            </div>
+
+                    <button type="submit" class="btn btn-primary col-md-1">Enviar</button>
+        </form>
+    </div>
+
+    {% if doacoes %}
+
+
+   <div class="container mt-5">
+        <h2>Tabela Doações</h2>
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Tipo de Doação</th>
+                    <th scope="col">Quantidade</th>
+                    <th scope="col">Unidade</th>
+                    <th scope="col">Data</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for doacao in doacoes %}
+                    <tr>
+                        <td>{{ doacao.id }}</td>
+                        <td>{{ doacao.tipo_doacao }}</td>
+                        <td>{{ doacao.quantidade }}</td>
+                        <td>{{ doacao.unidade }}</td>
+                        <td>{{ doacao.data_registro }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+    {% endif %}
+{% endif %}
+{% endblock %}
