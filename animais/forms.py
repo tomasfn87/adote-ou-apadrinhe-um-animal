@@ -1,6 +1,7 @@
 from django import forms
 
 from .models import Animal
+from .models import Doacao
 
 
 class AnimalForm(forms.ModelForm):

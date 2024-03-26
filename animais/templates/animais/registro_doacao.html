@@ -45,6 +45,14 @@
                         <label for="postdate">Data:</label>
                         <input type="date" class="form-control" id="postdate" name="postdate">
                     </div>
+                    
+                    <script>
+                        // Obtém a data atual
+                        var currentDate = new Date().toISOString().split('T')[0];
+                        
+                        // Define a data atual como o valor padrão para o campo de data
+                        document.getElementById('postdate').value = currentDate;
+                    </script>
 
                 </div>
             </div>

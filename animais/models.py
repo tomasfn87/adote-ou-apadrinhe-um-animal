@@ -85,4 +85,4 @@ class Doacao(models.Model):
     tipo_doacao   = models.CharField(max_length = 20)
     quantidade    = models.IntegerField()
     unidade       = models.CharField(max_length = 10, choices = UNIDADE_CHOICES)
-    data_registro = models.DateField()
+    data_registro = models.DateTimeField()

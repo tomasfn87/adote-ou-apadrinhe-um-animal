@@ -105,13 +105,12 @@ def redimensionar_imagem(imagem, largura_maxima, altura_maxima):
 def login_admin(request):
     error_message = ""
     if request.method == "POST":
-        print("request.session.get('next'):", request.session.get('next'))
         username = request.POST.get('username')
         password = request.POST.get('password')
         admin = authenticate(request, username=username, password=password)
         if admin is not None:
             login(request, admin)
-            next_page = request.session.get('next') or '/'
+            next_page = request.session.get('next', '/')
             return redirect(next_page)
         else:
             error_message = "Login e/ou senha inválido(s)."
@@ -129,7 +128,7 @@ def registro_doacao(request):
 
     data['doacoes'] = Doacao.objects.all()
 
-    print(data['doacoes'][0])
+    # print(data['doacoes'][0])
 
     if request.method == "POST":
         tipo_doacao = request.POST.get('tipo_doacao')
