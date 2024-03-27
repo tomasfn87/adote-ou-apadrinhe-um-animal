@@ -11,4 +11,5 @@ urlpatterns = [
     path("login/", views.login_admin , name="login_admin"),
     path("logout/", views.logout_admin , name="logout_admin"),
     path("registro_doacao/", views.registro_doacao , name="registro_doacao"),
+    path("delete_doacao/<int:doacao_id>", views.delete_doacao , name="delete_doacao"),
 ]

@@ -156,3 +156,9 @@ def registro_doacao(request):
 
     return render(request, 'animais/registro_doacao.html', data)
 
+def delete_doacao(request, doacao_id):
+    doacao = get_object_or_404(Doacao, pk=doacao_id)
+    if request.method == 'POST':
+        doacao.delete()
+    return redirect('animais:registro_doacao')
+

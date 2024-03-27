@@ -45,14 +45,6 @@
                         <label for="postdate">Data:</label>
                         <input type="date" class="form-control" id="postdate" name="postdate">
                     </div>
-                    
-                    <script>
-                        // Obtém a data atual
-                        var currentDate = new Date().toISOString().split('T')[0];
-                        
-                        // Define a data atual como o valor padrão para o campo de data
-                        document.getElementById('postdate').value = currentDate;
-                    </script>
 
                 </div>
             </div>
@@ -69,26 +61,47 @@
         <table class="table">
             <thead class="thead-dark">
                 <tr>
-                    <th scope="col">ID</th>
+                    <th scope="col">Data</th>
                     <th scope="col">Tipo de Doação</th>
                     <th scope="col">Quantidade</th>
                     <th scope="col">Unidade</th>
-                    <th scope="col">Data</th>
+                    <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
                 {% for doacao in doacoes %}
                     <tr>
-                        <td>{{ doacao.id }}</td>
+                        <td>{{ doacao.data_registro }}</td>
                         <td>{{ doacao.tipo_doacao }}</td>
                         <td>{{ doacao.quantidade }}</td>
                         <td>{{ doacao.unidade }}</td>
-                        <td>{{ doacao.data_registro }}</td>
+                        <td>
+                            <form id="deleteForm{{ doacao.id }}" action="{% url 'animais:delete_doacao' doacao.id %}" method="post">
+                                {% csrf_token %}
+                                <button type="button" class="btn btn-danger" onclick="confirmDelete({{ doacao.id }})">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </form>
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
+
+                    <script>
+                        // Obtém a data atual
+                        var currentDate = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Sao_Paulo' });
+
+                        // Define a data atual como o valor padrão para o campo de data
+                        document.getElementById('postdate').value = currentDate;
+
+                        function confirmDelete(doacaoId) {
+                            if (confirm("Tem certeza que deseja excluir esta doação?")) {
+                                document.getElementById("deleteForm" + doacaoId).submit();
+                            }
+                        }
+                    </script>
 
 
     {% endif %}
