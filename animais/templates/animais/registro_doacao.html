@@ -1,6 +1,8 @@
 {% extends 'animais/base.html' %}
 {% block title %}Adote ou Apadrinhe um Animal{% endblock %}
 {% block content %}
+<h1>Registro Doação</h1>
+<hr>
  {% if not user.is_authenticated %}
     <span>Clique no botão abaixo para fazer login</span>
     <br><br>
@@ -12,46 +14,69 @@
     {{ aviso }}
 </div>
 {% endif %}
-     <div class="container-sm custom-margin-auto">
-        <h2 class="text-center">Registro de Doação</h2>
-        <form method="post" action="">
-            {% csrf_token %}
-            <div class="form-group">
-                <div class="row">
 
-                    <div class="col-md-3">
-                        <label for="tipo_doacao">Qual tipo de doacao:</label>
-                        <select class="form-control" id="tipo_doacao" name="tipo_doacao" required>
-                            <option value="Ração">Ração</option>
-                            <option value="Areia">Areia</option>
-                        </select>
-                    </div>
-
-                    <div class="col-md-3">
-                        <label for="quantidade">Quantidade:</label>
-                        <input type="number" class="form-control" id="quantidade" name="quantidade" required>
-                    </div>
-
-                    <div class="col-md-3">
-                        <label for="unidade">Unidade:</label>
-                        <select class="form-control" id="unidade" name="unidade" required>
-                            <option value="Kg">Kg</option>
-                            <option value="g">g</option>
-                            <option value="unidades">Unidades</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group col-md-3">
-                        <label for="postdate">Data:</label>
-                        <input type="date" class="form-control" id="postdate" name="postdate">
-                    </div>
-
-                </div>
-            </div>
-
-                    <button type="submit" class="btn btn-primary col-md-1">Enviar</button>
-        </form>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-1">
     </div>
+    <div class="col-6">
+
+        <div class="container-sm custom-margin-auto">
+         <div class = 'card justify-content-md-center'>
+             <form class = 'justify-content-md-center' method="post" action="">
+            {% csrf_token %}
+                <div class="form-group justify-content-md-center">
+
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="postdate">Data:</label>
+                                <input type="date" class="form-control" id="postdate" name="postdate">
+                            </div>
+
+                            <div class = col-6>
+                                <label for="tipo_doacao">Qual tipo de doacao:</label>
+                                <select class="form-control" id="tipo_doacao" name="tipo_doacao" required>
+                                    <option value="Ração">Ração</option>
+                                    <option value="Areia">Areia</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class = col-6>
+                                <label for="quantidade">Quantidade:</label>
+                                <input type="number" class="form-control" id="quantidade" name="quantidade" required>
+                            </div>
+
+                            <div class = col-6>
+                                <label for="unidade">Unidade:</label>
+                                <select class="form-control" id="unidade" name="unidade" required>
+                                    <option value="Kg">Kg</option>
+                                    <option value="g">g</option>
+                                    <option value="unidades">Unidades</option>
+                                </select>
+                        </div>
+
+
+
+            </div>
+                    <div class="row justify-content-md-center">
+                        <button type="submit" class="btn btn-primary col col-md-4 mt-2">Enviar</button>
+
+                    </div>
+
+
+        </form>
+             </div>
+    </div>
+
+    </div>
+    <div class="col-1">
+    </div>
+  </div>
+</div>
+
+
 
     {% if doacoes %}
 

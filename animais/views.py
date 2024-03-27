@@ -162,3 +162,6 @@ def delete_doacao(request, doacao_id):
         doacao.delete()
     return redirect('animais:registro_doacao')
 
+def metas(request):
+    return render(request, 'animais/metas.html')
+

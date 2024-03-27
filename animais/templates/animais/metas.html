@@ -1,0 +1,26 @@
+{% extends 'animais/base.html' %}
+{% block title %}Adote ou Apadrinhe um Animal{% endblock %}
+{% block content %}
+<h1>Metas</h1>
+<hr>
+{% if not user.is_authenticated %}
+    <span>Clique no botão abaixo para fazer login</span>
+    <br><br>
+    <a href="{% url 'animais:login_admin' %}" class="btn btn-primary">Login</a>
+    <br><br>
+{% else %}
+
+<div class="container">
+    <div class="row justify-content-md-center">
+        <div class="card col-6">
+            <h2 class="text-center">Registro de metas</h2>
+            <div class="row justify-content-md-center">
+
+                inptus
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+{% endblock %}
