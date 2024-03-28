@@ -66,23 +66,28 @@ class Animal(models.Model):
     # adicionado_por
     adicionado_por = models.CharField(max_length=100)
 
+class Tipo_Doacao(models.Model):
+
+    def __str__(self):
+        return f"{self.nome} ({self.unidade})"
+
+    nome    = models.CharField(max_length = 20)
+    unidade = models.CharField(max_length = 20)
+
 
 class Doacao(models.Model):
     def __str__(self):
-        return f"{self.quantidade} {self.unidade} de {self.tipo_doacao} em {self.data_registro}"
+        return f"{self.quantidade}  de {self.tipo_doacao.nome} em {self.data_registro}"
 
-    UNIDADE_CHOICES = (
-        ('k', 'Kg'),
-        ('g', 'Gramas'),
-        ('u', 'Unidades'),
-    )
-
-    TIPO_DOACAO_CHOICES = (
-        ('r', 'Racao'),
-        ('a', 'Areia')
-    )
-
-    tipo_doacao   = models.CharField(max_length = 20)
+    tipo_doacao   = models.ForeignKey(Tipo_Doacao, on_delete = models.CASCADE)
     quantidade    = models.IntegerField()
-    unidade       = models.CharField(max_length = 10, choices = UNIDADE_CHOICES)
-    data_registro = models.DateTimeField()
+    data_registro = models.DateField()
+
+
+class Meta(models.Model):
+    def __str__(self):
+        return f"{self.meta_mensal}  de {self.tipo_doacao.nome} definida em {self.data_registro}"
+
+    tipo_doacao   = models.ForeignKey(Tipo_Doacao, on_delete = models.CASCADE)
+    meta_mensal   = models.IntegerField()
+    data_registro = models.DateField()

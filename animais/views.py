@@ -12,7 +12,7 @@ from os import environ as env
 import os
 import supabase
 
-from .models import Animal, Doacao
+from .models import Animal, Doacao, Tipo_Doacao, Meta
 from .forms import AnimalForm
 
 if os.path.isfile('./.env'):
@@ -126,35 +126,28 @@ def logout_admin(request):
 def registro_doacao(request):
     data = {}
 
-    data['doacoes'] = Doacao.objects.all()
 
-    # print(data['doacoes'][0])
+    data['tipo_doacao'] = Tipo_Doacao.objects.all()
 
     if request.method == "POST":
-        tipo_doacao = request.POST.get('tipo_doacao')
-        quantidade  = request.POST.get('quantidade')
-        unidade     = request.POST.get('unidade')
-        postdate    = request.POST.get('postdate')
-
 
         try:
-            doacao = Doacao(
-                tipo_doacao = tipo_doacao,
-                quantidade = quantidade,
-                unidade = unidade,
-                data_registro = postdate
+            doacao = Doacao.objects.create(
+                tipo_doacao_id = request.POST.get('tipo_doacao'),
+                quantidade     = request.POST.get('quantidade'),
+                data_registro  = request.POST.get('postdate')
             )
-
-            doacao.save()
-
-            data['aviso'] = f"Cadastro de {quantidade} {unidade} {tipo_doacao} em {postdate} realizado com sucesso."
+            data['aviso'] = f"Sucesso: Cadastro de {doacao.quantidade} {doacao.tipo_doacao.unidade} de {doacao.tipo_doacao.nome} em {doacao.data_registro}."
             data['alert_type'] = 'alert-primary'
+
         except:
-            data['aviso'] = f"Erro ao cadastrar {quantidade} {unidade} {tipo_doacao} em {postdate}."
+            data['aviso'] = f"Erro no Cadastro."
             data['alert_type'] = 'alert-danger'
 
+    data['doacoes'] = Doacao.objects.all()[::-1]
 
     return render(request, 'animais/registro_doacao.html', data)
+
 
 def delete_doacao(request, doacao_id):
     doacao = get_object_or_404(Doacao, pk=doacao_id)
@@ -163,5 +156,21 @@ def delete_doacao(request, doacao_id):
     return redirect('animais:registro_doacao')
 
 def metas(request):
-    return render(request, 'animais/metas.html')
+    data = {}
+
+    if request.method =="POST":
+        post = request.POST
+
+        try:
+            meta = Meta.objects.create(
+                tipo_doacao_id=post.get('tipo_doacao'),
+                meta_mensal=post.get('meta_mensal'),
+                data_registro=post.get('data_meta')
+            )
+        except:
+            pass
+
+
+    data['tipo_doacao'] = Tipo_Doacao.objects.all()
+    return render(request, 'animais/metas.html', data)
 
