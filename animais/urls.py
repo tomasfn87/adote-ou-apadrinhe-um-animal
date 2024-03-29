@@ -14,4 +14,5 @@ urlpatterns = [
     path("delete_doacao/<int:doacao_id>", views.delete_doacao , name="delete_doacao"),
     path("metas/", views.metas , name="metas"),
     path("delete_meta/<int:meta_id>", views.delete_meta , name="delete_meta"),
+    path("status_meta/", views.status_meta , name="status_meta"),
 ]

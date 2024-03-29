@@ -6,7 +6,9 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import ListView, TemplateView
 from django.utils import timezone as tz
 from django.contrib import messages
-from django.db import IntegrityError
+from django.db import IntegrityError , connection
+from django.db.models.functions import TruncMonth
+from django.db.models import Sum
 
 from io import BytesIO
 from PIL import Image
@@ -182,8 +184,42 @@ def metas(request):
 
     return render(request, 'animais/metas.html', data)
 
+
 def delete_meta(request, meta_id):
     meta = get_object_or_404(Meta, pk=meta_id)
     if request.method == 'POST':
         meta.delete()
     return redirect('animais:metas')
+
+
+def status_meta(request):
+    data = {}
+
+    cursor = connection.cursor()
+    cursor.execute('''
+                    select 
+                            coalesce(m.data_registro, DATE_TRUNC('month',d.data_registro)) mes,
+                            td.nome nome,
+                            sum(coalesce(d.quantidade, 0)) total,
+                            sum(coalesce(m.meta_mensal, 0)) meta,
+                            round((sum(coalesce(d.quantidade, 0)) / (sum(coalesce(m.meta_mensal, 0))+.0001))*100,2) as Perc
+                            
+                     from 
+                            animais_doacao as d
+                    left join
+                            animais_tipo_doacao td
+                    on d.tipo_doacao_id = td.id
+                    full outer join
+                            animais_meta m
+                    on m.tipo_doacao_id = td.id
+                    and DATE_TRUNC('month',d.data_registro) = DATE_TRUNC('month',m.data_registro) 
+                    group by mes, nome
+                    order by nome, mes
+                    ''')
+    row = cursor.fetchall()
+    print(row)
+
+
+    data['query']=row
+
+    return render(request, 'animais/status_meta.html', data)
