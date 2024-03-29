@@ -3,6 +3,9 @@
 {% block content %}
 <h1>Metas</h1>
 <hr>
+
+{% include 'animais/message_default.html' %}
+
 {% if not user.is_authenticated %}
     <span>Clique no botão abaixo para fazer login</span>
     <br><br>
@@ -27,19 +30,34 @@
           </div>
         </div>
         <div class="form-group row">
-          <label for="meta_mensal" class="col-sm-3 col-form-label">meta_mensal:</label>
+          <label for="meta_mensal" class="col-sm-3 col-form-label">Meta Mensal:</label>
           <div class="col-sm-9">
             <input type="number" class="form-control" id="meta_mensal" name="meta_mensal">
           </div>
         </div>
         <div class="form-group row mt-4">
-          <label for="data_meta" class="col-sm-3 col-form-label">Data da Meta:</label>
-          <div class="col-sm-9">
-            <input type="date" class="form-control" id="data_meta" name="data_meta">
+          <label for="mes_meta" class="col-sm-3 col-form-label">Data da Meta:</label>
+          <div class="col-sm-5">
+            <select class="form-control" id="mes_meta" name="mes_meta">
+                <option value="1">Janeiro</option>
+                <option value="2">Fevereiro</option>
+                <option value="3">Março</option>
+                <option value="4">Abril</option>
+                <option value="5">Maio</option>
+                <option value="6">Junho</option>
+                <option value="7">Julho</option>
+                <option value="8">Agosto</option>
+                <option value="9">Setembro</option>
+                <option value="10">Outubro</option>
+                <option value="11">Novembro</option>
+                <option value="12">Dezembro</option>
+            </select>
+          </div><div class="col-sm-4">
+            <input type="number" class="form-control" id="ano_meta" name="ano_meta">
           </div>
         </div>
         <div class="form-group row justify-content-md-end mt-4">
-          <div class="col-sm-9 offset-sm-3">
+          <div class="col-sm-7 offset-sm-5">
             <button type="submit" class="btn btn-primary">Enviar</button>
           </div>
         </div>
@@ -49,19 +67,52 @@
 </div>
 
 <script>
-  // Função para obter a data atual no formato 'YYYY-MM-DD'
-  function getCurrentDate() {
-    var now = new Date();
-    var year = now.getFullYear();
-    var month = (now.getMonth() + 1).toString().padStart(2, '0');
-    var day = now.getDate().toString().padStart(2, '0');
-    return year + '-' + month + '-' + day;
-  }
+  var now  = new Date();
 
-  // Define o valor padrão do campo de data como a data atual do Brasil
-  document.getElementById('data_meta').value = getCurrentDate();
+  document.getElementById('ano_meta').value = now.getFullYear();
+
+  document.getElementById('mes_meta').value = now.getMonth()+1;
 </script>
 
+   <div class="container mt-5">
+        <h2>Tabela Metas</h2>
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Data</th>
+                    <th scope="col">Tipo de Doação</th>
+                    <th scope="col">Meta</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for m in metas %}
+                    <tr>
+                        <td>{{ m.data_registro }}</td>
+                        <td>{{ m.tipo_doacao }} </td>
+                        <td>{{ m.meta_mensal }}</td>
+                        <td>
+                            <form id="deleteForm{{ m.id }}" action="{% url 'animais:delete_meta' m.id %}" method="post">
+                                {% csrf_token %}
+                                <button type="button" class="btn btn-danger" onclick="confirmDelete({{ m.id }})">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+                    <script>
+
+                        function confirmDelete(m_id) {
+                            if (confirm("Tem certeza que deseja excluir esta meta?")) {
+                                document.getElementById("deleteForm" + m_id).submit();
+                            }
+                        }
+                    </script>
 
 {% endif %}
 {% endblock %}

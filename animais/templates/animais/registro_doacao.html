@@ -9,11 +9,8 @@
     <a href="{% url 'animais:login_admin' %}" class="btn btn-primary">Login</a>
     <br><br>
 {% else %}
-{% if aviso %}
-<div class="alert {{ alert_type }}" role="alert">
-    {{ aviso }}
-</div>
-{% endif %}
+
+{% include 'animais/message_default.html' %}
 
   <div class="container">
     <div class="row justify-content-center">

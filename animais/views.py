@@ -5,6 +5,8 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import ListView, TemplateView
 from django.utils import timezone as tz
+from django.contrib import messages
+from django.db import IntegrityError
 
 from io import BytesIO
 from PIL import Image
@@ -137,12 +139,10 @@ def registro_doacao(request):
                 quantidade     = request.POST.get('quantidade'),
                 data_registro  = request.POST.get('postdate')
             )
-            data['aviso'] = f"Sucesso: Cadastro de {doacao.quantidade} {doacao.tipo_doacao.unidade} de {doacao.tipo_doacao.nome} em {doacao.data_registro}."
-            data['alert_type'] = 'alert-primary'
 
-        except:
-            data['aviso'] = f"Erro no Cadastro."
-            data['alert_type'] = 'alert-danger'
+            messages.success(request, f"Sucesso: Cadastro de {doacao.quantidade} {doacao.tipo_doacao.unidade} de {doacao.tipo_doacao.nome} em {doacao.data_registro}.")
+        except Exception as e:
+            messages.warning(request, f"Erro ao adicionar Meta")
 
     data['doacoes'] = Doacao.objects.all()[::-1]
 
@@ -162,15 +162,28 @@ def metas(request):
         post = request.POST
 
         try:
+            data_registro = f"{post.get('ano_meta')}-{post.get('mes_meta')}-1"
+
             meta = Meta.objects.create(
                 tipo_doacao_id=post.get('tipo_doacao'),
                 meta_mensal=post.get('meta_mensal'),
-                data_registro=post.get('data_meta')
+                data_registro=data_registro
             )
-        except:
-            pass
+            messages.success(request ,f"Meta de {meta.tipo_doacao.nome} Adicionada com sucesso")
 
+        except IntegrityError:
+            messages.warning(request, "Erro: Já existe meta para esse tipo e mes")
+
+        except Exception as e:
+            messages.warning(request, f"Erro ao adicionar Meta")
 
     data['tipo_doacao'] = Tipo_Doacao.objects.all()
+    data['metas']       = Meta.objects.all()[::-1]
+
     return render(request, 'animais/metas.html', data)
 
+def delete_meta(request, meta_id):
+    meta = get_object_or_404(Meta, pk=meta_id)
+    if request.method == 'POST':
+        meta.delete()
+    return redirect('animais:metas')

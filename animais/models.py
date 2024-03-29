@@ -91,3 +91,6 @@ class Meta(models.Model):
     tipo_doacao   = models.ForeignKey(Tipo_Doacao, on_delete = models.CASCADE)
     meta_mensal   = models.IntegerField()
     data_registro = models.DateField()
+
+    class Meta:
+        unique_together = ('data_registro', 'tipo_doacao')
