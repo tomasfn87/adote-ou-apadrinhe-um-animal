@@ -1,14 +1,14 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.sessions.models import Session
 from django.core.paginator import Paginator
+from django.db import IntegrityError, connection
+from django.db.models import Sum
+from django.db.models.functions import TruncMonth
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import ListView, TemplateView
 from django.utils import timezone as tz
 from django.contrib import messages
-from django.db import IntegrityError , connection
-from django.db.models.functions import TruncMonth
-from django.db.models import Sum
 
 from io import BytesIO
 from PIL import Image
@@ -16,7 +16,7 @@ from os import environ as env
 import os
 import supabase
 
-from .models import Animal, Doacao
+from .models import Animal, Doacao, Meta, Tipo_Doacao
 from .forms import AnimalForm, EditAnimalForm
 
 if os.path.isfile('./.env'):
@@ -83,8 +83,8 @@ def cadastro_sucesso(request):
     animal_id = request.session.get('new_animal_id', None)
     if animal_id is not None:
         animal = get_object_or_404(Animal, id=animal_id)
-        return render(
-            request, 'animais/cadastro_sucesso.html', {'animal': animal})
+        return render(request, 'animais/cadastro_sucesso.html',
+            {'animal': animal})
     return render(request, 'animais/cadastro_sucesso.html', {'animal': None})
 
 def redimensionar_imagem(imagem, largura_maxima, altura_maxima):
@@ -108,40 +108,88 @@ def redimensionar_imagem(imagem, largura_maxima, altura_maxima):
 
 def editar_animal(request, id):
     animal = get_object_or_404(Animal, id=id)
-    if request.method == 'POST':
-        form = EditAnimalForm(request.POST, request.FILES, instance=animal)
-        if form.is_valid():
-            form.save()
-            request.session['animal_id'] = animal.id
-            return redirect('animais:editar_animal_sucesso')
-    else:
+    if not request.method == 'POST':
         form = EditAnimalForm(instance=animal)
-    return render(request, 'animais/editar_animal.html', {'form': form, 'animal': animal})
+        return render(request, 'animais/editar_animal.html',
+            {'form': form, 'animal': animal})
+    form = EditAnimalForm(request.POST, instance=animal)
+    if form.is_valid():
+        form.save()
+        request.session['animal_id'] = animal.id
+        return redirect('animais:editar_animal_sucesso')
 
 def editar_animal_sucesso(request):
     animal_id = request.session.get('animal_id', None)
     if animal_id is not None:
         animal = get_object_or_404(Animal, id=animal_id)
-        return render(
-            request, 'animais/editar_animal_sucesso.html', {'animal': animal})
-    return render(request, 'animais/editar_animal_sucesso.html', {'animal': None})
+        return render(request, 'animais/editar_animal_sucesso.html',
+            {'animal': animal})
+    return render(request, 'animais/editar_animal_sucesso.html',
+        {'animal': None})
+
+def get_file_name_from_URL(url):
+    return url.split('/')[-1]
+
+def excluir_animal(request, id):
+    if not request.method == 'POST':
+        err = 'Erro ao excluir animal: por favor tente novamente mais tarde.'
+        request.session['error'] = err
+        return redirect('animais:excluir_animal_sucesso')
+    if request.user.is_authenticated:
+        err = ''
+        try:
+            animal = Animal.objects.get(pk=id)
+            animal.delete()
+            success = 'Registro de {} excluído com sucesso.'.format(
+                '{} ({} {}, de {})'.format(
+                    animal.nome,
+                    animal.get_especie_display(),
+                    animal.get_sexo_display(),
+                    animal.get_adicionado_em_display()))
+            client = supabase.create_client(SUPABASE_URL, SUPABASE_KEY)
+            response = client.storage \
+                .from_(SUPABASE_IMAGES_BUCKET_NAME) \
+                .remove(get_file_name_from_URL(animal.imagem))
+            if response[0]['metadata']['httpStatusCode'] == 200:
+                success = success.replace(
+                    'excluído', 'e sua imagem excluídos')
+            else:
+                err = 'Erro ao excluir imagem.'
+            request.session['success'] = success
+            request.session['error'] = err
+            return redirect('animais:excluir_animal_sucesso')
+        except Animal.DoesNotExist:
+            err = 'Erro ao excluir animal: animal não existe ou talvez já '
+            err += 'tenha sido excluído recentemente.'
+            request.session['error'] = err
+            return redirect('animais:excluir_animal_sucesso')
+    else:
+        request.session['next'] = request.path
+        return redirect('animais:login_admin')
+
+def excluir_animal_sucesso(request):
+    successful_delete_message = request.session.get('success')
+    unsuccessful_delete_message = request.session.get('error')
+    return render(request, 'animais/excluir_animal_sucesso.html', {
+        'successful_delete_message': successful_delete_message,
+        'unsuccessful_delete_message': unsuccessful_delete_message})
 
 def login_admin(request):
+    if not request.method == "POST":
+        return render(request, 'animais/login.html')
     error_message = ""
-    if request.method == "POST":
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        admin = authenticate(request, username=username, password=password)
-        if admin is not None:
-            login(request, admin)
-            next_page = request.session.get('next', '/')
-            return redirect(next_page)
-        else:
-            error_message = "Login e/ou senha inválido(s)."
+    username = request.POST.get('username')
+    password = request.POST.get('password')
+    admin = authenticate(request, username=username, password=password)
+    if admin is not None:
+        login(request, admin)
+        next_page = request.session.get('next', '/')
+        return redirect(next_page)
+    else:
+        error_message = "Login e/ou senha inválido(s)."
     if error_message:
         return render(request, 'animais/login.html',
             {'error_message': error_message})
-    return render(request, 'animais/login.html')
 
 def logout_admin(request):
     logout(request)
@@ -218,21 +266,21 @@ def status_meta(request):
     cursor = connection.cursor()
     cursor.execute('''
                     with metas as (
-                    select 
+                    select
                             tipo_doacao_id,
                             data_registro,
                             coalesce(lead(data_registro) over (partition by tipo_doacao_id order by data_registro), '2050-01-01') to_date,
                             meta_mensal
-                      from 
+                      from
                             animais_meta )
-                    
-                    select 
+
+                    select
                             atd.nome,
                             date_trunc('month' , ad.data_registro) data_registro,
                             sum(ad.quantidade) total,
                             round(avg(m.meta_mensal),0) meta_mensal,
                             round(sum(ad.quantidade)/avg(m.meta_mensal)*100,1) percentage
-                      from 
+                      from
                             animais_doacao  ad
                       left join
                             metas m

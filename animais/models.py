@@ -3,21 +3,33 @@ from django.core.files import File
 from django.db import models
 from django.utils import timezone as tz
 import datetime as dt
+import pytz
 
 
 class Animal(models.Model):
     def __str__(self):
-        return "{} ({}/{}) incluído em: {}".format(
+        return "{} ({}/{}) incluído em {} por {}".format(
             self.nome,
             self.especie,
             self.sexo,
             self.adicionado_em,
+            self.adicionado_por,
         )
 
     def validate_nome(value):
         if not any(char.isalpha() for char in value):
             raise validators.ValidationError(
                 "O campo nome deve conter pelo menos uma letra.")
+
+    def get_adicionado_em_display(self):
+        meses = {
+            1: 'Janeiro',   2: 'Fevereiro', 3: 'Março',     4: 'Abril',
+            5: 'Maio',      6: 'Junho',     7: 'Julho',     8: 'Agosto',
+            9: 'Setembro', 10: 'Outubro',  11: 'Novembro', 12: 'Dezembro'}
+        mes_pt = meses[self.adicionado_em.month]
+        data_br = self.adicionado_em.astimezone(
+            pytz.timezone('America/Sao_Paulo'))
+        return data_br.strftime(f"%d de {mes_pt} de %Y às %H:%M:%S")
 
     # nome
     nome = models.CharField(
@@ -61,6 +73,7 @@ class Animal(models.Model):
 
     # adicionado_por
     adicionado_por = models.CharField(max_length=100)
+
 
 class Tipo_Doacao(models.Model):
 
