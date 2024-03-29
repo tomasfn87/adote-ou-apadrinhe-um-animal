@@ -1,0 +1,17 @@
+{% extends 'animais/base.html' %}
+{% block title %}Editar informações do Animal{% endblock %}
+{% block content %}
+  <h2>Editar Animal</h2>
+  <div class="card custom-card-body">
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+          <img src="{{ animal.imagem }}" title="{{ animal.nome }} ({{  animal.get_especie_display  }}/{{ animal.get_sexo_display }})" alt="{{ animal.nome }}" class="card-img-top img-fluid" style="object-fit: cover; object-position: center;">
+          <hr>
+          <br>
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button type="submit" class="btn btn-primary">Salvar</button>
+        </form>
+    </div>
+  </div>
+{% endblock %}

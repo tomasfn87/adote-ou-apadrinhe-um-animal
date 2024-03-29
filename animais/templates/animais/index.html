@@ -48,6 +48,12 @@
                 <p class="card-text small">Incluído em {{ animal.adicionado_em }}</p>
               </p>
             </div>
+            {% if user.is_authenticated %}
+              <br>
+              <a href="{% url 'animais:editar_animal' animal.id %}" target="_blank" class="btn btn-primary">
+                Editar
+              </a>
+            {% endif %}
         </div>
       {% endfor %}
     </div>

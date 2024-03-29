@@ -16,8 +16,8 @@ from os import environ as env
 import os
 import supabase
 
-from .models import Animal, Doacao, Tipo_Doacao, Meta
-from .forms import AnimalForm
+from .models import Animal, Doacao
+from .forms import AnimalForm, EditAnimalForm
 
 if os.path.isfile('./.env'):
     from loadenv import load_env_file
@@ -105,6 +105,26 @@ def redimensionar_imagem(imagem, largura_maxima, altura_maxima):
     buffer = BytesIO()
     img.save(buffer, 'JPEG')
     return buffer.getvalue()
+
+def editar_animal(request, id):
+    animal = get_object_or_404(Animal, id=id)
+    if request.method == 'POST':
+        form = EditAnimalForm(request.POST, request.FILES, instance=animal)
+        if form.is_valid():
+            form.save()
+            request.session['animal_id'] = animal.id
+            return redirect('animais:editar_animal_sucesso')
+    else:
+        form = EditAnimalForm(instance=animal)
+    return render(request, 'animais/editar_animal.html', {'form': form, 'animal': animal})
+
+def editar_animal_sucesso(request):
+    animal_id = request.session.get('animal_id', None)
+    if animal_id is not None:
+        animal = get_object_or_404(Animal, id=animal_id)
+        return render(
+            request, 'animais/editar_animal_sucesso.html', {'animal': animal})
+    return render(request, 'animais/editar_animal_sucesso.html', {'animal': None})
 
 def login_admin(request):
     error_message = ""

@@ -11,12 +11,8 @@ class Animal(models.Model):
             self.nome,
             self.especie,
             self.sexo,
-            self.adicionado_recentemente,
+            self.adicionado_em,
         )
-
-    def adicionado_recentemente(self):
-        now = tz.now()
-        return now - dt.timedelta(days=1) <= self.adicionado_em <= now
 
     def validate_nome(value):
         if not any(char.isalpha() for char in value):

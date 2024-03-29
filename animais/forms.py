@@ -22,3 +22,8 @@ class AnimalForm(forms.ModelForm):
         if commit:
             animal.save()
         return animal
+
+class EditAnimalForm(forms.ModelForm):
+    class Meta:
+        model = Animal
+        fields = ['nome', 'especie', 'sexo']
