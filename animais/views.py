@@ -197,29 +197,44 @@ def status_meta(request):
 
     cursor = connection.cursor()
     cursor.execute('''
+                    with metas as (
                     select 
-                            coalesce(m.data_registro, DATE_TRUNC('month',d.data_registro)) mes,
-                            td.nome nome,
-                            sum(coalesce(d.quantidade, 0)) total,
-                            sum(coalesce(m.meta_mensal, 0)) meta,
-                            round((sum(coalesce(d.quantidade, 0)) / (sum(coalesce(m.meta_mensal, 0))+.0001))*100,2) as Perc
-                            
-                     from 
-                            animais_doacao as d
-                    left join
-                            animais_tipo_doacao td
-                    on d.tipo_doacao_id = td.id
-                    full outer join
-                            animais_meta m
-                    on m.tipo_doacao_id = td.id
-                    and DATE_TRUNC('month',d.data_registro) = DATE_TRUNC('month',m.data_registro) 
-                    group by mes, nome
-                    order by nome, mes
+                            tipo_doacao_id,
+                            data_registro,
+                            coalesce(lead(data_registro) over (partition by tipo_doacao_id order by data_registro), '2050-01-01') to_date,
+                            meta_mensal
+                      from 
+                            animais_meta )
+                    
+                    select 
+                            atd.nome,
+                            date_trunc('month' , ad.data_registro) data_registro,
+                            sum(ad.quantidade) total,
+                            round(avg(m.meta_mensal),0) meta_mensal,
+                            round(sum(ad.quantidade)/avg(m.meta_mensal)*100,1) percentage
+                      from 
+                            animais_doacao  ad
+                      left join
+                            metas m
+                         on ad.tipo_doacao_id = m.tipo_doacao_id
+                        and ad.data_registro >= m.data_registro
+                        and ad.data_registro  < m.to_date
+                      left join
+                            animais_tipo_doacao atd
+                         on atd.id = ad.tipo_doacao_id
+                    group by 1,2
+                    order by 1,2;
                     ''')
     row = cursor.fetchall()
-    print(row)
 
 
     data['query']=row
+
+    #fazer por datas
+
+    data['bar']    = str([x[0] for x in row])
+    data['values'] = str([str(x[3]) for x in row])
+
+    #print(data['values'])
 
     return render(request, 'animais/status_meta.html', data)
