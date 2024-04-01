@@ -196,6 +196,7 @@ def status_meta(request):
     data = {}
 
     cursor = connection.cursor()
+    #entender por que precisei colocar + 1 month
     cursor.execute('''
                     with metas as (
                     select 
@@ -208,7 +209,7 @@ def status_meta(request):
                     
                     select 
                             atd.nome,
-                            date_trunc('month' , ad.data_registro) data_registro,
+                            date_trunc('month' , ad.data_registro) + interval '1 month' as data_registro,
                             sum(ad.quantidade) total,
                             round(avg(m.meta_mensal),0) meta_mensal,
                             round(sum(ad.quantidade)/avg(m.meta_mensal)*100,1) percentage
@@ -233,6 +234,7 @@ def status_meta(request):
     #fazer por datas
 
     data['bar']    = str([x[0] for x in row])
+    data['datas']  = list({ x[1] for x in row } )
     data['values'] = str([str(x[3]) for x in row])
 
     #print(data['values'])
