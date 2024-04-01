@@ -4,10 +4,31 @@
   <h1>Status Meta</h1>
   <hr>
 
+<form id="dataForm" action="" method="get">
+  <div class="form-group">
+    <label for="escolha_data">Escolha uma data:</label>
+    <select class="form-control" name="escolha_data" id="escolha_data" onchange="submitForm()">
+      {% for dat in dist_datas %}
+        <option value="{{ dat|date:"Y-m-d" }}">{{ dat|date:"Y M" }}</option>
+      {% endfor %}
+    </select>
+  </div>
+</form>
+
+<script>
+  function submitForm() {
+    document.getElementById("dataForm").submit();
+  }
+</script>
+
+
+{% for produto, registros in resp.items %}
+  <h2>{{produto}}</h2>
+  <hr>
+
 <table class="table table-striped">
   <thead>
     <tr>
-      <th scope="col">Produto</th>
       <th scope="col">Mes Referencia</th>
       <th scope="col">Total</th>
       <th scope="col">Meta</th>
@@ -15,16 +36,16 @@
     </tr>
   </thead>
   <tbody>
-    {% for info in query %}
+    {% for registro in registros %}
     <tr data-toggle="collapse" data-target="#info{{ forloop.counter }}">
-      <td>{{ info.0 }}</td>
-      <td>{{ info.1|date:"Y-m" }}</td>
-      <td>{{ info.2 }}</td>
-      <td>{{ info.3 }}</td>
-      <td>{{ info.4|floatformat:2 }} %</td>
+      <td>{{ registro.0|date:"Y-m" }}</td>
+      <td>{{ registro.1 }}</td>
+      <td>{{ registro.2 }}</td>
+      <td>{{ registro.3 }} %</td>
     </tr>
     {% endfor %}
   </tbody>
 </table>
+{% endfor %}
 
 {% endblock %}
