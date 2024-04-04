@@ -2,6 +2,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.sessions.models import Session
 from django.core.paginator import Paginator
 from django.db import IntegrityError, connection
+from django.db.models import Q
 from django.db.models import Sum
 from django.db.models.functions import TruncMonth
 from django.http import HttpResponse
@@ -10,6 +11,7 @@ from django.views.generic import ListView, TemplateView
 from django.utils import timezone as tz
 from django.contrib import messages
 
+from datetime import datetime as dt
 from io import BytesIO
 from PIL import Image
 from os import environ as env
@@ -33,12 +35,31 @@ class IndexView(ListView):
     model = Animal
 
     def get_queryset(self):
-        return Animal.objects.order_by("-adicionado_em")
+        queryset = Animal.objects.order_by("-adicionado_em")
+        termo_busca = self.request.GET.get('q')
+        if termo_busca:
+            queryset = queryset.filter(
+                Q(nome__icontains=termo_busca) |
+                Q(adicionado_em__icontains=termo_busca)
+            )
+        sexos_selecionados = self.request.GET.getlist('sexo')
+        if sexos_selecionados:
+            queryset = queryset.filter(sexo__in=sexos_selecionados)
+        especies_selecionadas = self.request.GET.getlist('especie')
+        if especies_selecionadas:
+            queryset = queryset.filter(especie__in=especies_selecionadas)
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        p = Paginator(self.get_queryset(), self.paginate_by)
+        paginator = Paginator(self.get_queryset(), self.paginate_by)
+        page_number = self.request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        context['page_obj'] = page_obj
         context['num_pages'] = context['paginator'].num_pages
+        context['query_params'] = self.request.GET.copy()
+        if 'page' in context['query_params']:
+            del context['query_params']['page']
         return context
 
 class SobreView(TemplateView):
