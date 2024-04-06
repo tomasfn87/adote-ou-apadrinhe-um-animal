@@ -282,47 +282,88 @@ def delete_meta(request, meta_id):
 
 
 def status_meta(request):
+    data_meta = request.GET.get('escolha_data')
+    if data_meta == None:
+        data_meta = tz.now().strftime("%Y-%m-%d")
+
+    print(data_meta)
+
+
     data = {}
 
     cursor = connection.cursor()
-    cursor.execute('''
-                    with metas as (
-                    select
+    #entender por que precisei colocar + 1 month
+
+
+    cursor.execute(f'''
+                    with dates as 
+                    (select distinct a.date_trunc from
+                            (select date_trunc('month', data_registro) from animais_doacao
+                            union all
+                            select date_trunc('month', data_registro) from animais_meta) a
+                    ),
+                    totais as
+                    (
+                            select 
+                                    date_trunc('month',data_registro) data_totais, 
+                                    tipo_doacao_id, 
+                                    sum(quantidade) total 
+                            from 
+                                    animais_doacao 
+                            group by 1,2
+                    ),
+                    metas as 
+                    (
+                    select 
                             tipo_doacao_id,
                             data_registro,
                             coalesce(lead(data_registro) over (partition by tipo_doacao_id order by data_registro), '2050-01-01') to_date,
                             meta_mensal
-                      from
-                            animais_meta )
-
+                      from 
+                            animais_meta
+                    ) 
+                    
                     select
-                            atd.nome,
-                            date_trunc('month' , ad.data_registro) data_registro,
-                            sum(ad.quantidade) total,
-                            round(avg(m.meta_mensal),0) meta_mensal,
-                            round(sum(ad.quantidade)/avg(m.meta_mensal)*100,1) percentage
-                      from
-                            animais_doacao  ad
-                      left join
-                            metas m
-                         on ad.tipo_doacao_id = m.tipo_doacao_id
-                        and ad.data_registro >= m.data_registro
-                        and ad.data_registro  < m.to_date
-                      left join
+                            nome,
+                            d.date_trunc+ interval '1 day' as data_ref,
+                            coalesce(total, 0) total,
+                            coalesce(meta_mensal, 0) meta,
+                            100*coalesce(t.total, 0) / NULLIF(m.meta_mensal,0) as percent
+                    from 
+                            dates d
+                    cross join
                             animais_tipo_doacao atd
-                         on atd.id = ad.tipo_doacao_id
-                    group by 1,2
-                    order by 1,2;
+                    left join totais t
+                    on      t.data_totais = d.date_trunc
+                    and     t.tipo_doacao_id = atd.id
+                    left join metas m
+                    on      d.date_trunc >= m.data_registro
+                    and     d.date_trunc <  m.to_date
+                    and     m.tipo_doacao_id = atd.id;
                     ''')
+
+
     row = cursor.fetchall()
 
+    response = {}
+    products = {x[0] for x in row}
+
+    for p in products:
+        response[p] = []
+
+    for r in row:
+        p = r[0]
+
+        response[p].append(
+            (r[1],r[2],r[3],r[4])
+        )
+
+    print(response)
+    data['resp'] = response
 
     data['query']=row
 
-    #fazer por datas
-
-    data['bar']    = str([x[0] for x in row])
-    data['values'] = str([str(x[3]) for x in row])
+    data['dist_datas']  = list({ x[1] for x in row } )
 
     #print(data['values'])
 
