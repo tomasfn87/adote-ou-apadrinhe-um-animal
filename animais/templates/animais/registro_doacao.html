@@ -4,58 +4,48 @@
 <h1>Registro Doação</h1>
 <hr>
  {% if not user.is_authenticated %}
-    <span>Clique no botão abaixo para fazer login</span>
+    <span>Clique no botão abaixo para entrar com nome de usuário e senha</span>
     <br><br>
-    <a href="{% url 'animais:login_admin' %}" class="btn btn-primary">Login</a>
+    <a href="{% url 'animais:login_admin' %}" class="btn btn-primary">Entrar</a>
     <br><br>
 {% else %}
 
 {% include 'animais/message_default.html' %}
 
-  <div class="container">
-    <div class="row justify-content-center">
-
+    <div class="container">
+      <div class="row justify-content-center">
         <h2 class="text-center">Registro</h2>
-      <div class="col-1"></div>
-      <div class="col-6">
-        <div class="container-sm custom-margin-auto">
-          <div class="card justify-content-md-center">
-            <form class="justify-content-md-center" method="post" action="">
-              {% csrf_token %}
-              <div class="form-group justify-content-md-center">
-                <div class="row">
-                  <div class="col-5">
-                    <label for="postdate">Data:</label>
-                    <input type="date" class="form-control" id="postdate" name="postdate">
-                  </div>
-                  <div class="col-4">
-                    <label for="tipo_doacao">Tipo de doacao:</label>
-                    <select class="form-control" id="tipo_doacao" name="tipo_doacao" required>
-                      {% for d in tipo_doacao %}
+        <div class="col-lg-6 col-md-10">
+          <div class="container-sm custom-margin-auto">
+            <div class="card">
+              <form method="post" action="">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label for="postdate">Data:</label>
+                  <input type="date" class="form-control" id="postdate" name="postdate">
+                </div>
+                <div class="form-group">
+                  <label for="tipo_doacao">Tipo de doacao:</label>
+                  <select class="form-control" id="tipo_doacao" name="tipo_doacao" required>
+                    {% for d in tipo_doacao %}
                       <option value="{{d.id}}">{{d.nome}} ({{d.unidade}})</option>
-                      {% endfor %}
-                    </select>
-                  </div>
-
-                  <div class="col-3">
-                    <label for="quantidade">Quantidade:</label>
-                    <input type="number" class="form-control" id="quantidade" name="quantidade" required>
-                  </div>
-
+                    {% endfor %}
+                  </select>
                 </div>
-                <div class="row">
-                  <div class="row justify-content-md-center">
-                    <button type="submit" class="btn btn-primary col col-md-4 mt-2">Enviar</button>
-                  </div>
+                <div class="form-group">
+                  <label for="quantidade">Quantidade:</label>
+                  <input type="number" class="form-control" id="quantidade" name="quantidade" required>
+                </div>  
+                <br>
+                <div c  lass="form-group text-center">
+                  <but  ton type="submit" class="btn btn-primary">Enviar</button>
                 </div>
-              </div>
-            </form>
+              </form>
+            </div>
           </div>
         </div>
       </div>
-      <div class="col-1"></div>
     </div>
-  </div>
 
   <script>
     // Função para obter a data atual no formato 'YYYY-MM-DD'

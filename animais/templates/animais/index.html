@@ -1,7 +1,7 @@
 {% extends 'animais/base.html' %}
-{% block title %}Adote ou Apadrinhe um Animal{% endblock %}
+{% block title %}Gestão Canil{% endblock %}
 {% block content %}
-  <h1>Adote ou apadrinhe um animal</h1>
+  <h1>Gestão Canil</h1>
   <hr>
   <div class="row">
     <div class="card custom-card-body">
@@ -56,7 +56,7 @@
             <li class="page-item"><a class="page-link" href="?page=1{% if query_params.q %}&q={{ query_params.q }}{% endif %}{% if query_params.sexo %}&sexo={{ query_params.sexo }}{% endif %}{% if query_params.especie %}&especie={{ query_params.especie }}{% endif %}" title="Página anterior">&lt;&lt;</a></li>
             <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if query_params.q %}&q={{ query_params.q }}{% endif %}{% if query_params.sexo %}&sexo={{ query_params.sexo }}{% endif %}{% if query_params.especie %}&especie={{ query_params.especie }}{% endif %}" title="Primeira página">&lt;</a></li>
           {% endif %}
-          <li class="page-item disabled"><span class="page-link">Pág. <b>{{ page_obj.number }}</b> de <b>{{ num_pages }}</b></span></li>
+          <li class="page-item disabled"><span class="page-link" style="background-color: #2D2D2D; color: #DDD;">Pág. <b>{{ page_obj.number }}</b> de <b>{{ num_pages }}</b></span></li>
           {% if page_obj.has_next %}
             <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}{% if query_params.q %}&q={{ query_params.q }}{% endif %}{% if query_params.sexo %}&sexo={{ query_params.sexo }}{% endif %}{% if query_params.especie %}&especie={{ query_params.especie }}{% endif %}" title="Próxima página">&gt;</a></li>
             <li class="page-item"><a class="page-link" href="?page={{ num_pages }}{% if query_params.q %}&q={{ query_params.q }}{% endif %}{% if query_params.sexo %}&sexo={{ query_params.sexo }}{% endif %}{% if query_params.especie %}&especie={{ query_params.especie }}{% endif %}" title="Última página">&gt;&gt;</a></li>
@@ -114,7 +114,7 @@
             <li class="page-item"><a class="page-link" href="?page=1{% if query_params.q %}&q={{ query_params.q }}{% endif %}{% if query_params.sexo %}&sexo={{ query_params.sexo }}{% endif %}{% if query_params.especie %}&especie={{ query_params.especie }}{% endif %}" title="Página anterior">&lt;&lt;</a></li>
             <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if query_params.q %}&q={{ query_params.q }}{% endif %}{% if query_params.sexo %}&sexo={{ query_params.sexo }}{% endif %}{% if query_params.especie %}&especie={{ query_params.especie }}{% endif %}" title="Primeira página">&lt;</a></li>
             {% endif %}
-            <li class="page-item disabled"><span class="page-link">Pág. <b>{{ page_obj.number }}</b> de <b>{{ num_pages }}</b></span></li>
+            <li class="page-item disabled"><span class="page-link" style="background-color: #2D2D2D; color: #DDD;">Pág. <b>{{ page_obj.number }}</b> de <b>{{ num_pages }}</b></span></li>
             {% if page_obj.has_next %}
             <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}{% if query_params.q %}&q={{ query_params.q }}{% endif %}{% if query_params.sexo %}&sexo={{ query_params.sexo }}{% endif %}{% if query_params.especie %}&especie={{ query_params.especie }}{% endif %}" title="Próxima página">&gt;</a></li>
             <li class="page-item"><a class="page-link" href="?page={{ num_pages }}{% if query_params.q %}&q={{ query_params.q }}{% endif %}{% if query_params.sexo %}&sexo={{ query_params.sexo }}{% endif %}{% if query_params.especie %}&especie={{ query_params.especie }}{% endif %}" title="Última página">&gt;&gt;</a></li>
