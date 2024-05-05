@@ -39,6 +39,11 @@
         color: #DDD;
       }
 
+      nav {
+        border-width: 5px;
+        background-color: #1D1D1D;
+      }
+
       .nav-item a:hover, .navbar-brand:hover {
         background-color: #E8E8E8;
         border-radius: 6px;
@@ -278,7 +283,7 @@
       <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PKV2F5CD" height="0" width="0" style="display:none;visibility:hidden"></iframe>
     </noscript>
     <!-- End Google Tag Manager (noscript) -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-body-tertiary">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-body-tertiary fixed-top">
       <div class="container-fluid">
         <a class="navbar-brand" href="{% url 'animais:index' %}" id="logo" title="Ver os animais cadastrados para adoção" alt="Página Inicial">
           <svg fill="#555" height="30px" width="48px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 227.029 227.029" xml:space="preserve"><path d="M225.515,141.401V91.89L113.515,0l-112,91.89v49.512l32-26.254v81.882h-23v30h206v-30h-22v-81.061L225.515,141.401z M83.515,163.591c0-16.542,13.458-30,30-30s30,13.458,30,30v33.438h-60V163.591z"/></svg>
