@@ -255,6 +255,10 @@
       span.navbar-toogler-icon {
         color: #EEE;
       }
+
+      #who-am-i {
+        color: #8888CB;
+      }
     </style>
   </head>
   <body>
@@ -291,6 +295,9 @@
             {% if user.is_authenticated %}
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'animais:logout_admin' %}" title="Sair" alt="Sair">Sair</a>
+              </li>
+              <li class="nav-item">
+                <span class="nav-link" alt="Acessando como {{ user.username }}" id="who-am-i">{{ user.username }}</span>
               </li>
             {% endif %}
           </ul>
