@@ -8,35 +8,35 @@
       <div class="card-body">
         <form id="filtro-form" method="GET" class="form-inline">
           <div class="form-group mr-2">
-              <fieldset class="form-group">
-                  <legend class="mb-1">Sexo:</legend>
-                  <div class="form-check form-check-inline">
-                      <input type="checkbox" id="sexo_m" name="sexo" value="m" class="form-check-input">
-                      <label for="sexo_m" class="form-check-label">Macho</label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                      <input type="checkbox" id="sexo_f" name="sexo" value="f" class="form-check-input">
-                      <label for="sexo_f" class="form-check-label">Fêmea</label>
-                  </div>
-              </fieldset>
+            <fieldset class="form-group">
+              <legend class="mb-1">Sexo:</legend>
+              <div class="form-check form-check-inline">
+                <input type="checkbox" id="sexo_m" name="sexo" value="m" class="form-check-input">
+                <label for="sexo_m" class="form-check-label">Macho</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input type="checkbox" id="sexo_f" name="sexo" value="f" class="form-check-input">
+                <label for="sexo_f" class="form-check-label">Fêmea</label>
+              </div>
+            </fieldset>
           </div>
           <hr>
           <div class="form-group mr-2">
-              <fieldset class="form-group">
-                  <legend class="mb-1">Espécie:</legend>
-                  <div class="form-check form-check-inline">
-                      <input type="checkbox" id="especie_c" name="especie" value="c" class="form-check-input">
-                      <label for="especie_c" class="form-check-label">Cachorro</label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                      <input type="checkbox" id="especie_g" name="especie" value="g" class="form-check-input">
-                      <label for="especie_g" class="form-check-label">Gato</label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                      <input type="checkbox" id="especie_o" name="especie" value="o" class="form-check-input">
-                      <label for="especie_o" class="form-check-label">Outro</label>
-                  </div>
-              </fieldset>
+            <fieldset class="form-group">
+              <legend class="mb-1">Espécie:</legend>
+              <div class="form-check form-check-inline">
+                <input type="checkbox" id="especie_c" name="especie" value="c" class="form-check-input">
+                <label for="especie_c" class="form-check-label">Cachorro</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input type="checkbox" id="especie_g" name="especie" value="g" class="form-check-input">
+                <label for="especie_g" class="form-check-label">Gato</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input type="checkbox" id="especie_o" name="especie" value="o" class="form-check-input">
+                <label for="especie_o" class="form-check-label">Outro</label>
+              </div>
+            </fieldset>
           </div>
           <hr>
           <div class="form-group d-flex">
@@ -53,16 +53,26 @@
       <ul class="pagination">
         <span class="step-links horizontal-pagination">
           {% if page_obj.has_previous %}
-            <li class="page-item"><a class="page-link" href="?page=1{% if query_params.q %}&q={{ query_params.q }}{% endif %}{% if query_params.sexo %}&sexo={{ query_params.sexo }}{% endif %}{% if query_params.especie %}&especie={{ query_params.especie }}{% endif %}" title="Página anterior">&lt;&lt;</a></li>
-            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if query_params.q %}&q={{ query_params.q }}{% endif %}{% if query_params.sexo %}&sexo={{ query_params.sexo }}{% endif %}{% if query_params.especie %}&especie={{ query_params.especie }}{% endif %}" title="Primeira página">&lt;</a></li>
-          {% endif %}
-          <li class="page-item disabled"><span class="page-link" style="background-color: #2D2D2D; color: #DDD;">Pág. <b>{{ page_obj.number }}</b> de <b>{{ num_pages }}</b></span></li>
+            <li class="page-item">
+              <a class="page-link" href="?page=1{% for key, values in query_params.lists %}{% for value in values %}&{{ key }}={{ value }}{% endfor %}{% endfor %}" title="Página anterior">&lt;&lt;</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% for key, values in query_params.lists %}{% for value in values %}&{{ key }}={{ value }}{% endfor %}{% endfor %}" title="Primeira página">&lt;</a>
+            </li>
+           {% endif %}
+          <li class="page-item disabled">
+            <span class="page-link" style="background-color: #2D2D2D; color: #DDD;">Pág. <b>{{ page_obj.number }}</b> de <b>{{ num_pages }}</b></span>
+          </li>
           {% if page_obj.has_next %}
-            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}{% if query_params.q %}&q={{ query_params.q }}{% endif %}{% if query_params.sexo %}&sexo={{ query_params.sexo }}{% endif %}{% if query_params.especie %}&especie={{ query_params.especie }}{% endif %}" title="Próxima página">&gt;</a></li>
-            <li class="page-item"><a class="page-link" href="?page={{ num_pages }}{% if query_params.q %}&q={{ query_params.q }}{% endif %}{% if query_params.sexo %}&sexo={{ query_params.sexo }}{% endif %}{% if query_params.especie %}&especie={{ query_params.especie }}{% endif %}" title="Última página">&gt;&gt;</a></li>
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.next_page_number }}{% for key, values in query_params.lists %}{% for value in values %}&{{ key }}={{ value }}{% endfor %}{% endfor %}" title="Próxima página">&gt;</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="?page={{ num_pages }}{% for key, values in query_params.lists %}{% for value in values %}&{{ key }}={{ value }}{% endfor %}{% endfor %}" title="Última página">&gt;&gt;</a>
+            </li>
           {% endif %}
         </span>
-      </ul>
+      </ul> 
     </div>
   </div>
   {% if page_obj %}
@@ -111,47 +121,58 @@
         <ul class="pagination">
           <span class="step-links horizontal-pagination">
             {% if page_obj.has_previous %}
-            <li class="page-item"><a class="page-link" href="?page=1{% if query_params.q %}&q={{ query_params.q }}{% endif %}{% if query_params.sexo %}&sexo={{ query_params.sexo }}{% endif %}{% if query_params.especie %}&especie={{ query_params.especie }}{% endif %}" title="Página anterior">&lt;&lt;</a></li>
-            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if query_params.q %}&q={{ query_params.q }}{% endif %}{% if query_params.sexo %}&sexo={{ query_params.sexo }}{% endif %}{% if query_params.especie %}&especie={{ query_params.especie }}{% endif %}" title="Primeira página">&lt;</a></li>
+              <li class="page-item">
+                <a class="page-link" href="?page=1{% for key, values in query_params.lists %}{% for value in values %}&{{ key }}={{ value }}{% endfor %}{% endfor %}" title="Página anterior">&lt;&lt;</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% for key, values in query_params.lists %}{% for value in values %}&{{ key }}={{ value }}{% endfor %}{% endfor %}" title="Primeira página">&lt;</a>
+              </li>
             {% endif %}
-            <li class="page-item disabled"><span class="page-link" style="background-color: #2D2D2D; color: #DDD;">Pág. <b>{{ page_obj.number }}</b> de <b>{{ num_pages }}</b></span></li>
+            <li class="page-item disabled">
+              <span class="page-link" style="background-color: #2D2D2D; color: #DDD;">Pág. <b>{{ page_obj.number }}</b> de <b>{{ num_pages }}</b></span>
+            </li>
             {% if page_obj.has_next %}
-            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}{% if query_params.q %}&q={{ query_params.q }}{% endif %}{% if query_params.sexo %}&sexo={{ query_params.sexo }}{% endif %}{% if query_params.especie %}&especie={{ query_params.especie }}{% endif %}" title="Próxima página">&gt;</a></li>
-            <li class="page-item"><a class="page-link" href="?page={{ num_pages }}{% if query_params.q %}&q={{ query_params.q }}{% endif %}{% if query_params.sexo %}&sexo={{ query_params.sexo }}{% endif %}{% if query_params.especie %}&especie={{ query_params.especie }}{% endif %}" title="Última página">&gt;&gt;</a></li>
+              <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}{% for key, values in query_params.lists %}{% for value in values %}&{{ key }}={{ value }}{% endfor %}{% endfor %}" title="Próxima página">&gt;</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="?page={{ num_pages }}{% for key, values in query_params.lists %}{% for value in values %}&{{ key }}={{ value }}{% endfor %}{% endfor %}" title="Última página">&gt;&gt;</a>
+              </li>
             {% endif %}
           </span>
-        </ul>
+        </ul> 
+      
       </div>
     </div>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var params = new URLSearchParams(window.location.search);
-            var campoBusca = document.querySelector('input[name="q"]');
-            if (params.has('sexo')) {
-                var sexosParam = params.getAll('sexo');
-                for (var i = 0; i < sexosParam.length; i++) {
-                    var sexoParam = sexosParam[i];
-                    var checkboxSexo = document.querySelector(`input[name="sexo"][value="${sexoParam}"]`);
-                    if (checkboxSexo) {
-                        checkboxSexo.checked = true;
-                    }
-                }
+      document.addEventListener('DOMContentLoaded', function() {
+        var params = new URLSearchParams(window.location.search);
+        var campoBusca = document.querySelector('input[name="q"]');
+        
+        if (params.has('sexo')) {
+          var sexosParam = params.getAll('sexo');
+          sexosParam.forEach(function(sexoParam) {
+            var checkboxSexo = document.querySelector(`input[name="sexo"][value="${sexoParam}"]`);
+            if (checkboxSexo) {
+               checkboxSexo.checked = true;
             }
-            if (params.has('especie')) {
-                var especiesParam = params.getAll('especie');
-                for (var j = 0; j < especiesParam.length; j++) {
-                    var especieParam = especiesParam[j];
-                    var checkboxEspecie = document.querySelector(`input[name="especie"][value="${especieParam}"]`);
-                    if (checkboxEspecie) {
-                        checkboxEspecie.checked = true;
-                    }
-                }
+          });
+        }
+    
+        if (params.has('especie')) {
+          var especiesParam = params.getAll('especie');
+          especiesParam.forEach(function(especieParam) {
+            var checkboxEspecie = document.querySelector(`input[name="especie"][value="${especieParam}"]`);
+            if (checkboxEspecie) {
+              checkboxEspecie.checked = true;
             }
-            if (campoBusca && params.has('q')) {
-                campoBusca.value = params.get('q');
-            }
-        });
-    </script>
+          });
+        }
+        if (campoBusca && params.has('q')) {
+          campoBusca.value = params.get('q');
+        }
+      });
+    </script>  
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('btn-confirmar-exclusao').addEventListener('click', function(event) {
