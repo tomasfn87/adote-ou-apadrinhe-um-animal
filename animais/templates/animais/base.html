@@ -12,7 +12,7 @@
     <!-- End Google Tag Manager -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
-    <meta name="description" content="Univesp 2023 - Projeto Integrador II - Sistema para divulgação de animais para adoção (https://github.com/tomasfn87/adote-ou-apadrinhe-um-animal)">
+    <meta name="description" content="Univesp 2023 - Projeto Integrador II/III - Sistema para gestão de um canil, com banco de dados de animal e sistema de controle de doações e metas de  doação (https://github.com/tomasfn87/adote-ou-apadrinhe-um-animal)">
     <title>
       {% block title %}Gestão Canil{% endblock %}
     </title>
@@ -301,7 +301,7 @@
               <a class="nav-link" href="{% url 'animais:sobre' %}" title="Informações sobre a instituição" alt="Sobre">Sobre</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="https://www.facebook.com/rosefontanatc/" target="_blank">Contato</a>
+              <a class="nav-link" href="https://www.facebook.com/rosefontanatc/" title="Acesse o perfil do Facebook do canil" alt="Acesse o perfil do Facebook do canil" target="_blank">Contato</a>
             </li>
             {% if user.is_authenticated %}
               <li class="nav-item">
