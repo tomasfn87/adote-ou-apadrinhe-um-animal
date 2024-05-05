@@ -66,11 +66,26 @@
       }
 
       .nav-link {
-        color: #DDD;
+        color: #EEE;
+        font-weight: 500;
       }
 
       .nav-link:hover {
         color: #E5E5E5;
+        font-weight: 700;
+      }
+
+      a[title=Sair]:hover {
+        color: #FF5555;
+      }
+
+      #who-am-i {
+        color: #8888CB;
+        opacity: 70%;
+      }
+
+      #who-am-i:hover {
+        opacity: 100%;
       }
 
       table {
@@ -255,10 +270,6 @@
       span.navbar-toogler-icon {
         color: #EEE;
       }
-
-      #who-am-i {
-        color: #8888CB;
-      }
     </style>
   </head>
   <body>
@@ -297,7 +308,7 @@
                 <a class="nav-link" href="{% url 'animais:logout_admin' %}" title="Sair" alt="Sair">Sair</a>
               </li>
               <li class="nav-item">
-                <span class="nav-link" alt="Acessando como {{ user.username }}" id="who-am-i">{{ user.username }}</span>
+                <span class="nav-link" title="Acessando como {{ user.username }}" alt="Acessando como {{ user.username }}" id="who-am-i">{{ user.username }}</span>
               </li>
             {% endif %}
           </ul>
