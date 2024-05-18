@@ -12,6 +12,7 @@
   - Campinas
   - Leme
   - Santa Cruz das Palmeiras
+  - Capivari
 
 - __Integrantes__:
   - <a href="mailto:2109999@aluno.univesp.br" target="_blank">Carlos Alberto dos Santos Júnior</a>
