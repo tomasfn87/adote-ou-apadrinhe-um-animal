@@ -80,8 +80,8 @@
     <div class="row">
       {% for animal in page_obj %}
         <div class="col-12 col-md-4 card animal-card">
-          <a href="{{ animal.imagem }}" target="_blank">
-            <img src="{{ animal.imagem }}" title="{{ animal.nome }} ({{  animal.get_especie_display  }}/{{ animal.get_sexo_display }})" alt="{{ animal.nome }}" class="card-img-top img-fluid" style="object-fit: cover; object-position: center;">
+          <a href="https://{{ SUPABASE_ID }}.supabase.co/storage/v1/object/public/{{ SUPABASE_BUCKET_NAME }}/{{ animal.imagem }}" target="_blank">
+            <img src="https://{{ SUPABASE_ID }}.supabase.co/storage/v1/object/public/{{ SUPABASE_BUCKET_NAME }}/{{ animal.imagem }}" title="{{ animal.nome }} ({{  animal.get_especie_display  }}/{{ animal.get_sexo_display }})" alt="{{ animal.nome }}" class="card-img-top img-fluid" style="object-fit: cover; object-position: center;">
           </a>
           <div class="card-body">
             <h5 class="card-title">{{ animal.nome }}</h5>
@@ -142,14 +142,14 @@
             {% endif %}
           </span>
         </ul> 
-      
+ 
       </div>
     </div>
     <script>
       document.addEventListener('DOMContentLoaded', function() {
         var params = new URLSearchParams(window.location.search);
         var campoBusca = document.querySelector('input[name="q"]');
-        
+ 
         if (params.has('sexo')) {
           var sexosParam = params.getAll('sexo');
           sexosParam.forEach(function(sexoParam) {
@@ -159,7 +159,7 @@
             }
           });
         }
-    
+ 
         if (params.has('especie')) {
           var especiesParam = params.getAll('especie');
           especiesParam.forEach(function(especieParam) {

@@ -82,18 +82,15 @@ def cadastro(request):
             imagem_reduzida = redimensionar_imagem(
                 imagem=imagem, largura_maxima=1366, altura_maxima=768)
             client = supabase.create_client(SUPABASE_URL, SUPABASE_KEY)
+            
             response = \
                 client.storage.from_(SUPABASE_IMAGES_BUCKET_NAME).upload(
                     file=imagem_reduzida,
                     path=path_on_supabase,
-                    file_options={"content-type": "image/jpeg"},
+                    file_options={"content-type": "image/jpeg"}
                 )
             if response.status_code == 200:
-                animal.imagem = "{}/storage/v1/object/public/{}/{}".format(
-                    SUPABASE_URL,
-                    SUPABASE_IMAGES_BUCKET_NAME,
-                    path_on_supabase,
-                )
+                animal.imagem = path_on_supabase
                 animal.adicionado_por = request.user.username
                 animal.save()
                 request.session['new_animal_id'] = animal.id

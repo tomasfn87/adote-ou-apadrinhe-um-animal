@@ -9,8 +9,8 @@
       </span>
       <span>Seu animal foi cadastrado com sucesso.</span>
     </div>
-    <a href="{{ animal.imagem }}" target="_blank">
-      <img src="{{ animal.imagem }}" title="{{ animal.nome }} ({{  animal.get_especie_display  }}/{{ animal.get_sexo_display }})" alt="{{ animal.nome }}" class="card-img-top img-fluid" style="object-fit: cover; object-position: center;">
+    <a href="https://{{ SUPABASE_ID }}.supabase.co/storage/v1/object/public/{{ SUPABASE_BUCKET_NAME }}/{{ animal.imagem }}" target="_blank">
+      <img src="https://{{ SUPABASE_ID }}.supabase.co/storage/v1/object/public/{{ SUPABASE_BUCKET_NAME }}/{{ animal.imagem }}" title="{{ animal.nome }} ({{  animal.get_especie_display  }}/{{ animal.get_sexo_display }})" alt="{{ animal.nome }}" class="card-img-top img-fluid" style="object-fit: cover; object-position: center;">
     </a>
     <div class="card-body">
       <h5 class="card-title">{{ animal.nome }}</h5>

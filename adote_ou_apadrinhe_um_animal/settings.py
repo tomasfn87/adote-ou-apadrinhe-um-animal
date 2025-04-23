@@ -11,10 +11,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-from os import environ as env
-import os
+from os import environ as env, path
 
-if os.path.isfile('./.env'):
+if path.isfile('./.env'):
     from loadenv import load_env_file
     load_env_file()
 
@@ -65,7 +64,7 @@ ROOT_URLCONF = 'adote_ou_apadrinhe_um_animal.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -73,6 +72,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'animais.context_processors.supabase_params',
             ],
         },
     },
@@ -86,12 +86,12 @@ WSGI_APPLICATION = 'adote_ou_apadrinhe_um_animal.wsgi.app'
 
 DATABASES = {
     'default': {
-        'ENGINE': env.get('ENGINE'),
-        'HOST': env.get('HOST'),
-        'NAME': env.get('NAME'),
-        'USER': env.get('USER'),
+        'ENGINE'  : env.get('ENGINE'),
+        'HOST'    : env.get('HOST'),
+        'NAME'    : env.get('NAME'),
+        'USER'    : env.get('USER'),
         'PASSWORD': env.get('PASSWORD'),
-        'PORT': env.get('PORT'),
+        'PORT'    : env.get('PORT'),
     }
 }
 
@@ -131,7 +131,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = path.join(BASE_DIR, 'static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
